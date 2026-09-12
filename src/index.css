@@ -9,7 +9,7 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin: 10mm 12mm 10mm 12mm;
+    margin: 8mm 10mm 8mm 10mm;
   }
 
   *, *::before, *::after {
@@ -21,8 +21,8 @@
   html, body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 8.5pt !important;
-    line-height: 1.3 !important;
+    font-size: 7.5pt !important;
+    line-height: 1.25 !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -43,6 +43,21 @@
     max-width: 100% !important;
   }
 
+  /* RÈGLE ABSOLUE FOND BLANC ZÉRO GASPILLAGE D'ENCRE */
+  .print-document,
+  .print-document div,
+  .print-document p,
+  .print-document span,
+  .print-document table,
+  .print-document thead,
+  .print-document tbody,
+  .print-document tr,
+  .print-document th,
+  .print-document td {
+    background-color: #ffffff !important;
+    background-image: none !important;
+  }
+
   /* Conteneur principal de la fiche */
   .print-document {
     padding: 0 !important;
@@ -51,7 +66,6 @@
     max-width: 100% !important;
     border: none !important;
     box-shadow: none !important;
-    background: transparent !important;
   }
 
   /* Entête d'impression compact */
@@ -61,23 +75,24 @@
     justify-content: space-between !important;
     align-items: center !important;
     border-bottom: 1.5pt solid #0f172a !important;
-    padding-bottom: 4pt !important;
-    margin-bottom: 6pt !important;
+    padding-bottom: 3pt !important;
+    margin-bottom: 5pt !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
   }
 
   .print-header .logo-box {
-    height: 38px !important;
-    width: 38px !important;
-    min-width: 38px !important;
+    height: 34px !important;
+    width: 34px !important;
+    min-width: 34px !important;
     padding: 1pt !important;
-    border: 0.5pt solid #cbd5e1 !important;
-    border-radius: 4pt !important;
+    border: 0.5pt solid #94a3b8 !important;
+    border-radius: 3pt !important;
+    background: #ffffff !important;
   }
 
   .print-header h1 {
-    font-size: 12pt !important;
+    font-size: 11pt !important;
     font-weight: 800 !important;
     line-height: 1.15 !important;
     margin: 1pt 0 !important;
@@ -85,25 +100,27 @@
   }
 
   .print-header .subtitle {
-    font-size: 7.5pt !important;
-    color: #475569 !important;
+    font-size: 7pt !important;
+    color: #334155 !important;
     line-height: 1.2 !important;
   }
 
   .print-header .top-label {
-    font-size: 6.5pt !important;
+    font-size: 6pt !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.4pt !important;
+    letter-spacing: 0.3pt !important;
     color: #64748b !important;
   }
 
+  /* Badge de niveau en contour fin (sans aplat noir d'encre) */
   .print-header .level-badge {
-    background-color: #0f172a !important;
-    color: #ffffff !important;
-    font-size: 8pt !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1pt solid #0f172a !important;
+    font-size: 7.5pt !important;
     font-weight: 700 !important;
-    padding: 2pt 6pt !important;
+    padding: 1.5pt 5pt !important;
     border-radius: 3pt !important;
     white-space: nowrap !important;
   }
@@ -112,19 +129,19 @@
   .print-meta-grid {
     display: grid !important;
     grid-template-columns: 2fr 1fr 1.5fr 1.5fr !important;
-    gap: 4pt !important;
-    padding: 4pt 6pt !important;
-    background-color: #f8fafc !important;
+    gap: 3pt !important;
+    padding: 3pt 5pt !important;
+    background-color: #ffffff !important;
     border: 0.75pt solid #cbd5e1 !important;
-    border-radius: 4pt !important;
-    margin-bottom: 6pt !important;
-    font-size: 7.5pt !important;
+    border-radius: 3pt !important;
+    margin-bottom: 5pt !important;
+    font-size: 7pt !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
   }
 
   .print-meta-grid .meta-label {
-    font-size: 6.5pt !important;
+    font-size: 6pt !important;
     color: #64748b !important;
     text-transform: uppercase !important;
     font-weight: 600 !important;
@@ -132,7 +149,7 @@
   }
 
   .print-meta-grid strong {
-    font-size: 8pt !important;
+    font-size: 7.5pt !important;
     color: #0f172a !important;
     font-weight: 700 !important;
   }
@@ -141,17 +158,17 @@
   .print-section {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
-    margin-bottom: 6pt !important;
+    margin-bottom: 5pt !important;
   }
 
   .print-section-title {
-    font-size: 8.5pt !important;
+    font-size: 8pt !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.3pt !important;
-    padding-bottom: 1.5pt !important;
-    margin-bottom: 3pt !important;
-    border-bottom: 1pt solid #cbd5e1 !important;
+    padding-bottom: 1pt !important;
+    margin-bottom: 2.5pt !important;
+    border-bottom: 0.75pt solid #94a3b8 !important;
     color: #0f172a !important;
     break-after: avoid !important;
     page-break-after: avoid !important;
@@ -159,30 +176,41 @@
 
   /* Boîtes de contenu */
   .print-item-box {
-    padding: 3pt 5pt !important;
+    padding: 2.5pt 4pt !important;
     border: 0.5pt solid #cbd5e1 !important;
     border-radius: 3pt !important;
-    margin-bottom: 3pt !important;
-    font-size: 7.5pt !important;
+    margin-bottom: 2.5pt !important;
+    font-size: 7pt !important;
     line-height: 1.25 !important;
-    background-color: #f8fafc !important;
+    background-color: #ffffff !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
+  }
+
+  /* Badges dans les textes */
+  .print-badge {
+    border: 0.5pt solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 6.5pt !important;
+    font-weight: 600 !important;
+    padding: 0.5pt 3pt !important;
+    border-radius: 2pt !important;
   }
 
   /* Tableaux d'impression sans superposition */
   .print-table-container {
     width: 100% !important;
     overflow: visible !important;
-    margin-top: 2pt !important;
-    margin-bottom: 4pt !important;
+    margin-top: 1.5pt !important;
+    margin-bottom: 3pt !important;
   }
 
   table.print-table {
     width: 100% !important;
     table-layout: fixed !important;
     border-collapse: collapse !important;
-    font-size: 7.5pt !important;
+    font-size: 7pt !important;
     line-height: 1.2 !important;
   }
 
@@ -196,23 +224,24 @@
   }
 
   table.print-table th {
-    background-color: #f1f5f9 !important;
+    background-color: #ffffff !important;
     color: #0f172a !important;
     font-weight: 700 !important;
-    padding: 3pt 4pt !important;
+    padding: 2.5pt 3.5pt !important;
     border: 0.75pt solid #94a3b8 !important;
-    font-size: 7.5pt !important;
+    font-size: 7pt !important;
     text-align: left !important;
   }
 
   table.print-table td {
-    padding: 3pt 4pt !important;
-    border: 0.75pt solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+    padding: 2.5pt 3.5pt !important;
+    border: 0.5pt solid #cbd5e1 !important;
     vertical-align: top !important;
     word-wrap: break-word !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;
-    font-size: 7.5pt !important;
+    font-size: 7pt !important;
     color: #1e293b !important;
   }
 
@@ -220,11 +249,11 @@
   .print-signature {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
-    margin-top: 8pt !important;
-    padding-top: 4pt !important;
+    margin-top: 6pt !important;
+    padding-top: 3pt !important;
     border-top: 0.75pt solid #cbd5e1 !important;
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    font-size: 7pt !important;
+    font-size: 6.5pt !important;
   }
 }

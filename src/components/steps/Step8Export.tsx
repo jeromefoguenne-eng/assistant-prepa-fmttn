@@ -267,7 +267,7 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
             <div>
               <strong>Dimensions médiatiques :</strong>{' '}
               {lesson.mediaEducation.dimensions.map(d => (
-                <span key={d} className="inline-block mr-1.5 px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[10px] font-semibold">
+                <span key={d} className="print-badge inline-block mr-1.5 px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[10px] font-semibold">
                   {d === 'aux_medias' ? 'Éducation AUX médias' : d === 'par_les_medias' ? 'Éducation PAR les médias' : 'Éducation AVEC les médias'}
                 </span>
               ))}
