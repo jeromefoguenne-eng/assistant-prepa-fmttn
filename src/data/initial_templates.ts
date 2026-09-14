@@ -106,21 +106,25 @@ export const SAMPLE_LESSON_PLANS: LessonPlan[] = [
       criteria: [
         {
           id: 'crit_1',
-          criterion: 'Exactitude de la condition logique',
+          attenduId: 'S1_SAV_1',
+          attenduText: 'Expliquer le concept de variable, de condition (si... alors) et de boucle dans un algorithme.',
+          criterion: 'Exactitude de la condition logique et de la variable score',
           observableIndicator: "Le déchet disparaît et le score augmente de 1 uniquement lorsqu'il touche le bon bac de tri.",
           nonAcquis: 'Le déchet traverse sans réaction ou le score s\'incrémente à l\'infini.',
           enVoie: 'La condition fonctionne mais avec un bogue de détection intermittent.',
-          acquis: 'La conditionnelle fonctionne parfaitement à chaque essai.',
-          depasse: 'La condition gère à la fois le bon bac (+1) et une erreur de tri (-1).'
+          acquis: 'La conditionnelle et la variable fonctionnent parfaitement à chaque essai.',
+          depasse: 'La condition gère à la fois le bon bac (+1) et une erreur de tri (-1) avec commentaire du code.'
         },
         {
           id: 'crit_2',
-          criterion: 'Lisibilité et propreté du code',
-          observableIndicator: 'Le script est ordonné, non dupliqué et commenté.',
-          nonAcquis: 'Blocs en désordre, scripts orphelins non nettoyés.',
-          enVoie: 'Script fonctionnel mais encombré de blocs inutilisés.',
-          acquis: 'Code clair, structuré et nettoyé.',
-          depasse: 'Code modulaire utilisant un bloc personnalisé.'
+          attenduId: 'S1_COM_2',
+          attenduText: 'Concevoir et programmer un script visuel qui répond à des interactions utilisateur et traite des données simples.',
+          criterion: 'Fonctionnalité globale et autonomie du programme',
+          observableIndicator: 'Le script est ordonné, répond aux entrées de l\'utilisateur et est nettoyé.',
+          nonAcquis: 'Blocs en désordre, scripts orphelins non nettoyés, programme inactif.',
+          enVoie: 'Script fonctionnel mais encombré de blocs inutilisés nécessitant un étayage.',
+          acquis: 'Code clair, structuré et fonctionnel en autonomie.',
+          depasse: 'Code modulaire enrichi utilisant des fonctions ou blocs personnalisés.'
         }
       ],
       feedbackStrategy: 'Débriefing oral immédiat entre pairs suivi d\'un visa de validation par l\'enseignant.'
@@ -233,12 +237,25 @@ export const SAMPLE_LESSON_PLANS: LessonPlan[] = [
       criteria: [
         {
           id: 'crit_p6_1',
-          criterion: 'Repérage pertinent des indices',
+          attenduId: 'P6_SAV_1',
+          attenduText: 'Identifier qu\'une image numérique peut être retouchée, falsifiée ou synthétisée de manière automatisée.',
+          criterion: 'Identification de la falsification par IA',
           observableIndicator: "L'élève cite un élément anatomique ou optique incohérent précis.",
           nonAcquis: 'Jugement au hasard sans argument observable.',
           enVoie: 'L\'élève sent que l\'image est fausse mais l\'argument reste flou (« ça a l\'air bizarre »).',
           acquis: 'L\'élève identifie un indice tangible (ex: « Le reflet dans ses lunettes ne correspond pas au paysage »).',
           depasse: 'L\'élève repère plusieurs anomalies subtiles et propose une hypothèse sur le prompt utilisé.'
+        },
+        {
+          id: 'crit_p6_2',
+          attenduId: 'P6_COM_1',
+          attenduText: 'Repérer des indices de manipulation dans un document multimédia et justifier ses doutes à l\'aide de critères observables.',
+          criterion: 'Justification critique et argumentation',
+          observableIndicator: 'L\'élève complète sa grille d\'enquête en formulant une explication factuelle et vérifiable.',
+          nonAcquis: 'Incapacité à justifier son choix autrement que par « j\'ai deviné ».',
+          enVoie: 'Explication partielle ou circulaire (« c\'est faux parce que c\'est moche »).',
+          acquis: 'Explication factuelle basée sur au moins deux critères de la grille.',
+          depasse: 'Explication rigoureuse et proposition d\'une méthode de contre-vérification (ex: recherche d\'image inversée).'
         }
       ],
       feedbackStrategy: 'Validation immédiate sur ardoise par pouce levé/baissé.'

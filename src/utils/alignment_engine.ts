@@ -12,18 +12,19 @@ export function analyzeAlignment(lesson: LessonPlan): AlignmentDiagnostic {
   let evalScore = 70;
 
   // 1. Référentiel check
-  if (!lesson.selectedItems || lesson.selectedItems.length === 0) {
-    warnings.push("Aucun attendu ou compétence du référentiel officiel n'est sélectionné.");
+  const selectedItems = lesson.selectedItems || [];
+  if (selectedItems.length === 0) {
+    warnings.push("Aucun contenu ni attendu du référentiel officiel n'est sélectionné.");
     recommendations.push("Sélectionnez au moins un attendu officiel du référentiel FMTTN dans l'étape 1.");
   } else {
-    strengths.push(`${lesson.selectedItems.length} élément(s) du référentiel officiel FMTTN lié(s) à la leçon.`);
+    strengths.push(`${selectedItems.length} élément(s) officiel(s) du référentiel FMTTN (contenus et attendus) lié(s) à la leçon.`);
   }
 
   if (!lesson.referentielRationale || lesson.referentielRationale.trim().length < 15) {
     warnings.push("L'explicitation de l'ancrage dans le référentiel est incomplète ou absente.");
-    recommendations.push("Justifiez en 2 ou 3 phrases pourquoi cette séquence sert précisément l'élément du référentiel sélectionné.");
+    recommendations.push("Justifiez en 2 ou 3 phrases pourquoi cette séquence sert précisément les contenus et attendus sélectionnés.");
   } else {
-    strengths.push("Explicitation claire du lien avec le référentiel FMTTN.");
+    strengths.push("Explicitation claire et didactique de l'ancrage dans le référentiel FMTTN.");
   }
 
   // 2. Objectifs Bloom check
@@ -85,19 +86,39 @@ export function analyzeAlignment(lesson: LessonPlan): AlignmentDiagnostic {
     }
   }
 
-  // 5. Triple concordance (Objectif Bloom vs Évaluation)
-  if (lesson.objectives && lesson.objectives.length > 0 && lesson.evaluation) {
-    const highestBloom = lesson.objectives[0]?.bloomLevel;
-    const evalType = lesson.evaluation.type;
-    const task = lesson.evaluation.taskDescription?.toLowerCase() || '';
+  // 5. Triple concordance (Attendus du référentiel vs Objectifs Bloom vs Évaluation)
+  const criteria = lesson.evaluation?.criteria || [];
+  if (criteria.length === 0) {
+    warnings.push("Aucun critère d'évaluation n'est défini dans la grille analytique.");
+    recommendations.push("Définissez des critères et indicateurs observables pour évaluer l'atteinte des attendus (Étape 6).");
+    evalScore = 20;
+  } else {
+    // Vérification de la couverture des attendus
+    if (selectedItems.length > 0) {
+      const coveredAttendusCount = selectedItems.filter(item => 
+        criteria.some(c => c.attenduId === item.id)
+      ).length;
+
+      if (coveredAttendusCount === selectedItems.length) {
+        strengths.push(`Alignement parfait : 100% des attendus sélectionnés (${selectedItems.length}/${selectedItems.length}) font l'objet d'un critère d'évaluation explicite.`);
+        evalScore = Math.min(100, evalScore + 20);
+      } else if (coveredAttendusCount > 0) {
+        warnings.push(`Couverture partielle : ${coveredAttendusCount}/${selectedItems.length} attendu(s) sélectionné(s) sont directement reliés à un critère d'évaluation.`);
+        recommendations.push("Associez chaque attendu sélectionné à un critère d'évaluation pour garantir une triple concordance complète.");
+      } else {
+        warnings.push("Les critères d'évaluation ne sont pas encore explicitement reliés aux attendus de la page 1.");
+        recommendations.push("Reliez vos critères d'évaluation aux attendus sélectionnés à l'aide du sélecteur à l'étape 6.");
+      }
+    }
+
+    const highestBloom = lesson.objectives?.[0]?.bloomLevel;
+    const evalType = lesson.evaluation?.type;
+    const task = lesson.evaluation?.taskDescription?.toLowerCase() || '';
 
     if (highestBloom === 'creer' && (task.includes('qcm') || task.includes('restituer') || evalType === 'diagnostique')) {
       warnings.push("Discordance cognitive majeure : L'objectif vise la création ('Créer'), mais l'évaluation semble se limiter à un rappel passif ou un QCM.");
       recommendations.push("Pour un objectif de création, prévoyez une grille d'évaluation portant sur la production concrète ou le prototype réalisé par l'élève.");
       evalScore -= 30;
-    } else if (lesson.evaluation.criteria && lesson.evaluation.criteria.length > 0) {
-      strengths.push(`Évaluation critériée structurée avec ${lesson.evaluation.criteria.length} critère(s) et indicateurs observables.`);
-      evalScore = Math.min(100, evalScore + 20);
     }
   }
 

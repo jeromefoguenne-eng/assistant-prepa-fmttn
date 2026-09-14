@@ -65,6 +65,8 @@ export interface DigitalToolUsage {
 
 export interface EvaluationCriterion {
   id: string;
+  attenduId?: string;
+  attenduText?: string;
   criterion: string;
   observableIndicator: string;
   nonAcquis: string;

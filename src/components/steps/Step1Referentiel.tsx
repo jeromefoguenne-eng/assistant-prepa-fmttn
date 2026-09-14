@@ -4,12 +4,10 @@ import {
   Search, 
   Filter, 
   Check, 
-  Plus, 
   Trash2, 
-  AlertCircle, 
-  HelpCircle,
-  ExternalLink,
-  Sparkles
+  AlertCircle,
+  GraduationCap,
+  UserCheck
 } from 'lucide-react';
 import { LessonPlan, GradeLevel, ReferentielItem } from '../../types/lesson';
 import rawReferentiel from '../../data/fmttn_referentiel.json';
@@ -60,9 +58,9 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
       // Search term
       if (searchTerm.trim()) {
         const q = searchTerm.toLowerCase();
-        const matchTitle = item.intitule.toLowerCase().includes(q);
-        const matchAttendu = item.attendu.toLowerCase().includes(q);
-        const matchChamp = item.champ.toLowerCase().includes(q);
+        const matchTitle = (item.intitule || '').toLowerCase().includes(q);
+        const matchAttendu = (item.attendu || '').toLowerCase().includes(q);
+        const matchChamp = (item.champ || '').toLowerCase().includes(q);
         return matchTitle || matchAttendu || matchChamp;
       }
 
@@ -97,11 +95,13 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
             <span className="text-xs uppercase font-bold tracking-wider text-blue-300 bg-blue-500/30 px-2.5 py-0.5 rounded-full">
               Étape 1 sur 8
             </span>
-            <h2 className="text-2xl font-bold mt-1 text-white">Ancrage dans le Référentiel FMTTN</h2>
+            <h2 className="text-2xl font-bold mt-1 text-white">
+              Ancrage dans le Référentiel FMTTN
+            </h2>
             <p className="text-blue-100 text-sm mt-2 max-w-3xl leading-relaxed">
-              Toute préparation rigoureuse commence par les attendus et compétences officiels de la Fédération Wallonie-Bruxelles.
-              L'application intègre l'intégralité du référentiel officiel du Tronc Commun (449 attendus de P1 à S3). 
-              <strong> Ne commencez jamais par un outil numérique ou une activité sans avoir ancré votre leçon dans le référentiel.</strong>
+              Toute préparation pédagogique rigoureuse s'articule autour de la double structure officielle de la Fédération Wallonie-Bruxelles :
+              les <strong>Contenus (savoirs, savoir-faire, compétences (enseignant))</strong> et les <strong>Attendus (élèves)</strong>.
+              L'application intègre l'intégralité du référentiel officiel du Tronc Commun (449 items de P1 à S3).
             </p>
           </div>
         </div>
@@ -185,15 +185,15 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
         </div>
       </div>
 
-      {/* Éléments sélectionnés */}
+      {/* Éléments sélectionnés : Contenus et Attendus */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-base font-semibold text-slate-900">
-              1.2 Attendus et compétences sélectionnés ({lesson.selectedItems.length})
+              1.2 Contenus (savoirs, savoir-faire, compétences (enseignant)) et attendus (élèves) sélectionnés ({lesson.selectedItems.length})
             </h3>
             <p className="text-xs text-slate-500">
-              Ces éléments officiels constitueront la base d'ancrage de vos objectifs et de votre évaluation.
+              Ces éléments officiels constitueront la base d'ancrage de vos objectifs d'apprentissage et de votre grille d'évaluation à l'étape 6.
             </p>
           </div>
         </div>
@@ -202,9 +202,9 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
           <div className="p-4 bg-amber-50 rounded-xl border border-amber-200 text-amber-800 text-xs flex items-start space-x-2">
             <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold">Aucun élément du référentiel sélectionné pour l'instant.</p>
+              <p className="font-semibold">Aucun contenu ni attendu sélectionné pour l'instant.</p>
               <p className="mt-0.5">
-                Utilisez le moteur de recherche et les filtres ci-dessous pour choisir au moins une compétence, un savoir ou un savoir-faire officiel pour le niveau <strong>{lesson.grade}</strong>.
+                Utilisez le moteur de recherche et les filtres ci-dessous pour choisir au moins un élément du référentiel officiel pour le niveau <strong>{lesson.grade}</strong>.
               </p>
             </div>
           </div>
@@ -213,11 +213,18 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
             {lesson.selectedItems.map((item) => (
               <div
                 key={item.id}
-                className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start justify-between gap-3 text-xs"
+                className="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-start justify-between gap-4 text-xs"
               >
-                <div className="space-y-1 flex-1">
+                <div className="space-y-2 flex-1">
+                  {/* Badges d'identification */}
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[11px]">
+                    <span className={`font-bold px-2 py-0.5 rounded text-[11px] ${
+                      item.type === 'Compétence'
+                        ? 'bg-purple-100 text-purple-800'
+                        : item.type === 'Savoir-faire'
+                        ? 'bg-emerald-100 text-emerald-800'
+                        : 'bg-blue-100 text-blue-800'
+                    }`}>
                       {item.type}
                     </span>
                     <span className="font-medium text-slate-600">
@@ -227,18 +234,38 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
                       {item.annee}
                     </span>
                   </div>
-                  <div className="font-semibold text-slate-900 text-sm">
-                    {item.intitule}
+
+                  {/* Répartition bipartite : Contenu Enseignant & Attendu Élève */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                    {/* Colonne Contenu Enseignant */}
+                    <div className="bg-white p-3 rounded-lg border border-slate-200 space-y-1">
+                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-indigo-700 uppercase tracking-wide">
+                        <GraduationCap className="w-3.5 h-3.5" />
+                        <span>Contenu ({item.type.toLowerCase()} - enseignant)</span>
+                      </div>
+                      <div className="font-semibold text-slate-900 text-xs leading-snug">
+                        {item.intitule}
+                      </div>
+                    </div>
+
+                    {/* Colonne Attendu Élève */}
+                    <div className="bg-indigo-50/50 p-3 rounded-lg border border-indigo-100 space-y-1">
+                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-indigo-900 uppercase tracking-wide">
+                        <UserCheck className="w-3.5 h-3.5 text-indigo-600" />
+                        <span>Attendu (élève)</span>
+                      </div>
+                      <p className="text-slate-800 italic text-xs leading-snug">
+                        « {item.attendu} »
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-slate-700 bg-white p-2 rounded-lg border border-slate-100 italic">
-                    « {item.attendu} »
-                  </p>
                 </div>
+
                 <button
                   type="button"
                   onClick={() => removeItem(item.id)}
-                  className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-200 transition"
-                  title="Retirer cet attendu"
+                  className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-200 transition mt-1"
+                  title="Retirer cet élément"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -253,13 +280,13 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
-              <span>1.3 Référentiel officiel FMTTN pour {lesson.grade}</span>
+              <span>1.3 Référentiel officiel FMTTN pour {lesson.grade} — Contenus (savoirs, savoir-faire, compétences (enseignant)) et attendus (élèves)</span>
               <span className="text-xs font-normal text-slate-500">
                 ({filteredItems.length} résultat{filteredItems.length > 1 ? 's' : ''})
               </span>
             </h3>
             <p className="text-xs text-slate-500">
-              Recherche directe par mot-clé dans les 449 attendus du document officiel de la FWB.
+              Recherche directe par mot-clé dans les contenus et attendus officiels de la FWB (Tronc commun).
             </p>
           </div>
 
@@ -270,7 +297,7 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
                 type="text"
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                placeholder="Rechercher (ex: boucle, capteur, bois...)"
+                placeholder="Rechercher (ex: algorithme, boucle, matériaux...)"
                 className="pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none w-56 sm:w-64"
               />
             </div>
@@ -349,10 +376,10 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
         </div>
 
         {/* Scrollable list */}
-        <div className="max-h-96 overflow-y-auto space-y-2.5 pr-2 divide-y divide-slate-100">
+        <div className="max-h-96 overflow-y-auto space-y-3 pr-2 divide-y divide-slate-100">
           {filteredItems.length === 0 ? (
             <div className="py-12 text-center text-slate-400 text-xs">
-              Aucun attendu ne correspond à votre filtre de recherche pour le niveau {lesson.grade}.
+              Aucun contenu ni attendu ne correspond à votre filtre de recherche pour le niveau {lesson.grade}.
             </div>
           ) : (
             filteredItems.map(item => {
@@ -361,13 +388,13 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
                 <div
                   key={item.id}
                   onClick={() => toggleItem(item)}
-                  className={`pt-2.5 pb-2 px-3 rounded-xl cursor-pointer transition flex items-start justify-between gap-3 ${
+                  className={`pt-3 pb-3 px-3.5 rounded-xl cursor-pointer transition flex items-start justify-between gap-3 ${
                     isSelected
                       ? 'bg-indigo-50/70 border border-indigo-200 shadow-sm'
                       : 'hover:bg-slate-50 border border-transparent'
                   }`}
                 >
-                  <div className="space-y-1 flex-1">
+                  <div className="space-y-1.5 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                         item.type === 'Compétence'
@@ -385,15 +412,19 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
                         {item.annee}
                       </span>
                     </div>
+
                     <div className="text-xs font-semibold text-slate-900">
+                      <span className="text-indigo-700 font-bold mr-1">Contenu :</span>
                       {item.intitule}
                     </div>
-                    <p className="text-xs text-slate-600 line-clamp-2">
-                      {item.attendu}
-                    </p>
+
+                    <div className="text-xs text-slate-700 bg-white/80 p-2 rounded-lg border border-slate-200/60">
+                      <span className="text-slate-500 font-medium mr-1 text-[11px] uppercase tracking-wide">Attendu (élève) :</span>
+                      <span className="italic">« {item.attendu} »</span>
+                    </div>
                   </div>
 
-                  <div className="mt-1">
+                  <div className="mt-1 flex-shrink-0">
                     <div
                       className={`w-6 h-6 rounded-lg flex items-center justify-center border transition ${
                         isSelected
@@ -417,7 +448,7 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
           1.4 Justification didactique de l'ancrage *
         </label>
         <p className="text-xs text-slate-500">
-          Expliquez en quelques mots pourquoi cette leçon s'inscrit précisément dans cet élément du référentiel et quel est son intérêt formatif.
+          Expliquez en quelques mots pourquoi cette leçon s'inscrit précisément dans ces contenus et attendus du référentiel et quel est son intérêt formatif.
         </p>
         <textarea
           rows={3}
