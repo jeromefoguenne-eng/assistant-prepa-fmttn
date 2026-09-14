@@ -322,34 +322,37 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
           </button>
           <button
             type="button"
-            onClick={() => setSelectedVoletFilter('volet2')}
-            className={`px-2.5 py-1 text-xs rounded-lg transition ${
-              selectedVoletFilter === 'volet2'
-                ? 'bg-blue-600 text-white font-medium'
-                : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
-            }`}
-          >
-            Volet 2 : Numérique
-          </button>
-          <button
-            type="button"
             onClick={() => setSelectedVoletFilter('volet1')}
-            className={`px-2.5 py-1 text-xs rounded-lg transition ${
+            className={`px-2.5 py-1 text-xs rounded-lg transition border ${
               selectedVoletFilter === 'volet1'
-                ? 'bg-amber-600 text-white font-medium'
-                : 'bg-amber-50 text-amber-700 hover:bg-amber-100'
+                ? 'bg-[#0084c0] text-white border-[#0084c0] font-semibold shadow-xs'
+                : 'bg-sky-50 text-[#006a9b] border-sky-200 hover:bg-sky-100'
             }`}
+            title="Volet 1 : Formation manuelle, technique et technologique (Code couleur officiel FWB : Bleu #0084C0)"
           >
             Volet 1 : Technique & Manuel
           </button>
           <button
             type="button"
-            onClick={() => setSelectedVoletFilter('communs')}
-            className={`px-2.5 py-1 text-xs rounded-lg transition ${
-              selectedVoletFilter === 'communs'
-                ? 'bg-emerald-600 text-white font-medium'
-                : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+            onClick={() => setSelectedVoletFilter('volet2')}
+            className={`px-2.5 py-1 text-xs rounded-lg transition border ${
+              selectedVoletFilter === 'volet2'
+                ? 'bg-[#4b368a] text-white border-[#4b368a] font-semibold shadow-xs'
+                : 'bg-purple-50 text-[#4b368a] border-purple-200 hover:bg-purple-100'
             }`}
+            title="Volet 2 : Numérique (Code couleur officiel FWB : Violet #4B368A)"
+          >
+            Volet 2 : Numérique
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedVoletFilter('communs')}
+            className={`px-2.5 py-1 text-xs rounded-lg transition border ${
+              selectedVoletFilter === 'communs'
+                ? 'bg-[#589acd] text-white border-[#589acd] font-semibold shadow-xs'
+                : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+            }`}
+            title="Contenus communs aux deux volets (Code couleur officiel FWB : Bleu-gris #589ACD)"
           >
             Contenus communs
           </button>
@@ -396,6 +399,16 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
                 >
                   <div className="space-y-1.5 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
+                      {/* Badge Volet avec couleur officielle du référentiel FMTTN */}
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
+                        item.volet.includes('Volet 1')
+                          ? 'bg-sky-50 text-[#006a9b] border-sky-300'
+                          : item.volet.includes('Volet 2')
+                          ? 'bg-purple-50 text-[#4b368a] border-purple-300'
+                          : 'bg-slate-100 text-slate-700 border-slate-300'
+                      }`}>
+                        {item.volet.includes('Volet 1') ? 'Volet 1 : Manuel & Tech' : item.volet.includes('Volet 2') ? 'Volet 2 : Numérique' : 'Contenus communs'}
+                      </span>
                       <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                         item.type === 'Compétence'
                           ? 'bg-purple-100 text-purple-800'
@@ -405,10 +418,10 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
                       }`}>
                         {item.type}
                       </span>
-                      <span className="text-slate-500 text-xs">
+                      <span className="text-slate-600 font-medium text-xs">
                         {item.champ}
                       </span>
-                      <span className="text-[10px] text-slate-400 font-mono">
+                      <span className="text-[10px] text-slate-400 font-mono bg-slate-100 px-1.5 py-0.2 rounded">
                         {item.annee}
                       </span>
                     </div>

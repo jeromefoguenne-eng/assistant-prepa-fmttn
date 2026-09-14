@@ -50,20 +50,21 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
 
         {lesson.phases.map((phase, idx) => (
           <div key={phase.id} className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div className="flex items-center space-x-2">
-                <span className="w-6 h-6 rounded-full bg-cyan-100 text-cyan-800 text-xs font-bold flex items-center justify-center">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+              <div className="flex items-center space-x-2.5 flex-1 min-w-0">
+                <span className="w-7 h-7 rounded-full bg-cyan-100 text-cyan-800 text-xs font-bold flex-shrink-0 flex items-center justify-center">
                   {idx + 1}
                 </span>
                 <input
                   type="text"
                   value={phase.title}
                   onChange={e => updatePhase(idx, { title: e.target.value })}
-                  className="font-bold text-sm text-slate-900 bg-transparent border-b border-dashed border-slate-300 focus:border-cyan-500 outline-none px-1"
+                  placeholder="Intitulé complet de la phase..."
+                  className="w-full font-bold text-sm sm:text-base text-slate-900 bg-transparent border-b border-dashed border-slate-300 hover:border-slate-400 focus:border-cyan-500 outline-none px-1.5 py-0.5 transition"
                 />
               </div>
 
-              <div className="flex items-center space-x-1.5 text-xs text-slate-600 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">
+              <div className="flex items-center space-x-1.5 text-xs text-slate-600 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 flex-shrink-0 self-start sm:self-auto">
                 <Clock className="w-3.5 h-3.5 text-slate-400" />
                 <span>Durée :</span>
                 <input
