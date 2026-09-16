@@ -291,29 +291,29 @@ export const EMPTY_LESSON_PLAN: LessonPlan = {
   phases: [
     {
       id: 'phase_1',
-      title: 'Phase 1 : Amorce / Situation déclenchante (Découverte)',
+      title: 'Phase 1 : Amorce / Situation déclenchante',
       durationMinutes: 10,
       studentRole: '',
       teacherRole: '',
-      socialModality: 'Collectif',
+      socialModality: '',
       materials: ''
     },
     {
       id: 'phase_2',
-      title: 'Phase 2 : Recherche / Expérimentation active (Action)',
+      title: 'Phase 2 : Recherche / Expérimentation active',
       durationMinutes: 30,
       studentRole: '',
       teacherRole: '',
-      socialModality: 'Binôme ou petits groupes',
+      socialModality: '',
       materials: ''
     },
     {
       id: 'phase_3',
-      title: 'Phase 3 : Institutionnalisation / Synthèse (Structuration)',
+      title: 'Phase 3 : Synthèse / Structuration',
       durationMinutes: 10,
       studentRole: '',
       teacherRole: '',
-      socialModality: 'Collectif puis individuel',
+      socialModality: '',
       materials: ''
     }
   ],

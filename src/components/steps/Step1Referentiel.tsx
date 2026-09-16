@@ -122,7 +122,7 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
               type="text"
               value={lesson.title}
               onChange={e => onChange({ title: e.target.value })}
-              placeholder="Ex: Programmer un simulateur de tri des déchets avec Scratch"
+              placeholder="Titre de la leçon..."
               className="w-full text-sm rounded-lg border-slate-300 border px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
             />
           </div>
@@ -152,7 +152,7 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
               type="text"
               value={lesson.duration}
               onChange={e => onChange({ duration: e.target.value })}
-              placeholder="Ex: 50 min, 2 x 50 min"
+              placeholder="Durée de la séance..."
               className="w-full text-sm rounded-lg border-slate-300 border px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
@@ -165,7 +165,7 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
               type="text"
               value={lesson.targetAudience}
               onChange={e => onChange({ targetAudience: e.target.value })}
-              placeholder="Ex: 22 élèves, îlots de 2, 2 élèves à besoins spécifiques (dys)"
+              placeholder="Composition de la classe et caractéristiques du public..."
               className="w-full text-sm rounded-lg border-slate-300 border px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
@@ -178,7 +178,7 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
               type="text"
               value={lesson.prerequisites}
               onChange={e => onChange({ prerequisites: e.target.value })}
-              placeholder="Ex: Utilisation de base de la souris, notions de boucle"
+              placeholder="Prérequis indispensables pour cette séquence..."
               className="w-full text-sm rounded-lg border-slate-300 border px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
@@ -467,7 +467,7 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
           rows={3}
           value={lesson.referentielRationale}
           onChange={e => onChange({ referentielRationale: e.target.value })}
-          placeholder="Ex: Cette séquence permet d'aborder la pensée informatique au travers d'un problème concret de développement durable (tri sélectif). Elle active la compréhension de la logique conditionnelle tout en responsabilisant l'élève sur son empreinte matérielle."
+          placeholder="Justifiez la pertinence didactique de l'ancrage dans le référentiel FMTTN..."
           className="w-full text-sm rounded-xl border border-slate-300 p-3 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
       </div>

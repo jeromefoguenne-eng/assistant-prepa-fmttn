@@ -196,7 +196,7 @@ export const Step3EducationMedias: React.FC<Step3Props> = ({ lesson, onChange, o
           rows={3}
           value={lesson.mediaEducation.justification}
           onChange={e => handleJustificationChange(e.target.value)}
-          placeholder="Ex: Les élèves découvrent la nature binaire et logique d'un programme informatique. En créant eux-mêmes les règles de décision du jeu, ils démystifient le fonctionnement des algorithmes et comprennent que toute technologie résulte de choix humains codés."
+          placeholder="Justifiez la plus-value de l'éducation aux médias et au numérique dans cette séquence..."
           className="w-full text-sm rounded-xl border border-slate-300 p-3 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
       </div>

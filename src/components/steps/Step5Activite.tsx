@@ -2,12 +2,15 @@ import React from 'react';
 import { 
   Layers, 
   Clock, 
-  Sparkles, 
   Sliders,
   BookmarkCheck,
   Zap,
   HelpCircle,
-  Accessibility
+  Accessibility,
+  Plus,
+  Trash2,
+  ChevronUp,
+  ChevronDown
 } from 'lucide-react';
 import { LessonPlan, ActivityPhase } from '../../types/lesson';
 
@@ -22,6 +25,49 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
   const updatePhase = (index: number, updatedField: Partial<ActivityPhase>) => {
     const newPhases = [...lesson.phases];
     newPhases[index] = { ...newPhases[index], ...updatedField };
+    onChange({ phases: newPhases });
+  };
+
+  const addPhase = () => {
+    const nextNumber = lesson.phases.length + 1;
+    const newPhase: ActivityPhase = {
+      id: 'phase_' + Date.now(),
+      title: `Phase ${nextNumber} : `,
+      durationMinutes: 15,
+      studentRole: '',
+      teacherRole: '',
+      socialModality: '',
+      materials: ''
+    };
+    onChange({ phases: [...lesson.phases, newPhase] });
+  };
+
+  const removePhase = (index: number) => {
+    if (lesson.phases.length <= 1) {
+      alert("Une préparation didactique doit comporter au moins une phase.");
+      return;
+    }
+    if (window.confirm(`Voulez-vous vraiment supprimer la phase ${index + 1} ?`)) {
+      const newPhases = lesson.phases.filter((_, i) => i !== index);
+      onChange({ phases: newPhases });
+    }
+  };
+
+  const movePhaseUp = (index: number) => {
+    if (index <= 0) return;
+    const newPhases = [...lesson.phases];
+    const temp = newPhases[index - 1];
+    newPhases[index - 1] = newPhases[index];
+    newPhases[index] = temp;
+    onChange({ phases: newPhases });
+  };
+
+  const movePhaseDown = (index: number) => {
+    if (index >= lesson.phases.length - 1) return;
+    const newPhases = [...lesson.phases];
+    const temp = newPhases[index + 1];
+    newPhases[index + 1] = newPhases[index];
+    newPhases[index] = temp;
     onChange({ phases: newPhases });
   };
 
@@ -41,12 +87,12 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
             </span>
             <h2 className="text-2xl font-bold mt-1 text-white">Scénariser l'Activité</h2>
             <p className="text-cyan-100 text-sm mt-1 max-w-3xl leading-relaxed">
-              Découpez votre leçon selon les 3 temps forts canoniques de la didactique active FMTTN :
+              Découpez votre scénario en phases d'apprentissage actives (3 phases proposées par défaut, personnalisables) :
             </p>
           </div>
         </div>
 
-        {/* Adéquation parfaite des titres des phases dans le bandeau bleu */}
+        {/* Bandeau bleu dynamique des phases */}
         <div className="bg-black/20 rounded-xl p-3 border border-white/10 flex flex-wrap items-center gap-2">
           {lesson.phases.map((phase, idx) => (
             <React.Fragment key={phase.id}>
@@ -72,11 +118,27 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
         </div>
       </div>
 
-      {/* 4.1 Déroulement chronologique des 3 phases */}
+      {/* 4.1 Déroulement chronologique des phases avec ajout/suppression */}
       <div className="space-y-6">
-        <h3 className="text-base font-semibold text-slate-900">
-          4.1 Déroulement chronologique des phases d'apprentissage
-        </h3>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 className="text-base font-semibold text-slate-900">
+              4.1 Déroulement chronologique des phases d'apprentissage ({lesson.phases.length})
+            </h3>
+            <p className="text-xs text-slate-500">
+              Définissez les étapes de votre séquence. Vous pouvez ajouter, réordonner ou supprimer des phases selon vos besoins.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={addPhase}
+            className="flex items-center space-x-1.5 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold shadow-xs transition self-start sm:self-auto cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Ajouter une phase</span>
+          </button>
+        </div>
 
         {lesson.phases.map((phase, idx) => (
           <div key={phase.id} className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
@@ -94,18 +156,60 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
                 />
               </div>
 
-              <div className="flex items-center space-x-1.5 text-xs text-slate-600 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 flex-shrink-0 self-start sm:self-auto">
-                <Clock className="w-3.5 h-3.5 text-slate-400" />
-                <span>Durée :</span>
-                <input
-                  type="number"
-                  min={5}
-                  step={5}
-                  value={phase.durationMinutes}
-                  onChange={e => updatePhase(idx, { durationMinutes: parseInt(e.target.value) || 0 })}
-                  className="w-12 bg-white text-center font-bold text-slate-900 border border-slate-300 rounded px-1 py-0.5 outline-none"
-                />
-                <span>min</span>
+              <div className="flex items-center space-x-2 self-start sm:self-auto">
+                <div className="flex items-center space-x-1.5 text-xs text-slate-600 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 flex-shrink-0">
+                  <Clock className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Durée :</span>
+                  <input
+                    type="number"
+                    min={5}
+                    step={5}
+                    value={phase.durationMinutes}
+                    onChange={e => updatePhase(idx, { durationMinutes: parseInt(e.target.value) || 0 })}
+                    className="w-12 bg-white text-center font-bold text-slate-900 border border-slate-300 rounded px-1 py-0.5 outline-none"
+                  />
+                  <span>min</span>
+                </div>
+
+                {/* Ordre */}
+                <div className="flex items-center bg-slate-50 rounded-xl border border-slate-200 p-0.5">
+                  <button
+                    type="button"
+                    onClick={() => movePhaseUp(idx)}
+                    disabled={idx === 0}
+                    className={`p-1.5 rounded-lg transition ${
+                      idx === 0 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-600 hover:text-cyan-700 hover:bg-slate-200 cursor-pointer'
+                    }`}
+                    title="Monter cette phase"
+                  >
+                    <ChevronUp className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => movePhaseDown(idx)}
+                    disabled={idx === lesson.phases.length - 1}
+                    className={`p-1.5 rounded-lg transition ${
+                      idx === lesson.phases.length - 1 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-600 hover:text-cyan-700 hover:bg-slate-200 cursor-pointer'
+                    }`}
+                    title="Descendre cette phase"
+                  >
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* Supprimer phase */}
+                <button
+                  type="button"
+                  onClick={() => removePhase(idx)}
+                  className={`p-2 rounded-xl transition ${
+                    lesson.phases.length <= 1
+                      ? 'text-slate-300 cursor-not-allowed'
+                      : 'text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 cursor-pointer'
+                  }`}
+                  title={lesson.phases.length <= 1 ? "Impossible de supprimer la dernière phase" : "Supprimer cette phase"}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
@@ -118,7 +222,7 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
                   rows={3}
                   value={phase.studentRole}
                   onChange={e => updatePhase(idx, { studentRole: e.target.value })}
-                  placeholder="Ex: Observe le dysfonctionnement projeté, formule des hypothèses sur la cause, manipule le matériel..."
+                  placeholder="Actions, démarches, manipulations et réflexions menées par l'élève..."
                   className="w-full text-xs rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-cyan-500 outline-none"
                 />
               </div>
@@ -131,7 +235,7 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
                   rows={3}
                   value={phase.teacherRole}
                   onChange={e => updatePhase(idx, { teacherRole: e.target.value })}
-                  placeholder="Ex: Anime le questionnement déclencheur, distribue les fiches-indices aux îlots bloqués, garantit la sécurité..."
+                  placeholder="Posture, relances, interventions, consignes et étayage de l'enseignant..."
                   className="w-full text-xs rounded-xl border border-slate-300 p-2.5 focus:ring-2 focus:ring-cyan-500 outline-none"
                 />
               </div>
@@ -144,7 +248,7 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
                   type="text"
                   value={phase.socialModality}
                   onChange={e => updatePhase(idx, { socialModality: e.target.value })}
-                  placeholder="Ex: Collectif, Binômes, Îlots de 4, Individuel"
+                  placeholder="Organisation du travail (collectif, binômes, individuel...)"
                   className="w-full text-xs rounded-lg border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
@@ -157,7 +261,7 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
                   type="text"
                   value={phase.materials}
                   onChange={e => updatePhase(idx, { materials: e.target.value })}
-                  placeholder="Ex: Vidéoprojecteur, fiches protocoles, outillage, pièces"
+                  placeholder="Supports, outillage, fiches, matériel numérique..."
                   className="w-full text-xs rounded-lg border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
@@ -190,7 +294,7 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
               onChange={e => onChange({
                 differentiation: { ...lesson.differentiation, remediation: e.target.value }
               })}
-              placeholder="Ex: Cartes-indices avec étapes simplifiées, étayage pas-à-pas..."
+              placeholder="Dispositifs d'aide, cartes-indices, reprise pas-à-pas..."
               className="w-full text-xs bg-white rounded-lg border border-rose-200 p-2 focus:ring-2 focus:ring-rose-500 outline-none resize-none"
             />
           </div>
@@ -208,7 +312,7 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
               onChange={e => onChange({
                 differentiation: { ...lesson.differentiation, consolidation: e.target.value }
               })}
-              placeholder="Ex: Exercice d'entraînement autonome sur une situation similaire pour ancrer le geste ou l'algorithme..."
+              placeholder="Activités d'ancrage, entraînement ciblé supplémentaire..."
               className="w-full text-xs bg-white rounded-lg border border-amber-200 p-2 focus:ring-2 focus:ring-amber-500 outline-none resize-none"
             />
           </div>
@@ -226,7 +330,7 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
               onChange={e => onChange({
                 differentiation: { ...lesson.differentiation, depassement: e.target.value }
               })}
-              placeholder="Ex: Défi additionnel avec contraintes supplémentaires, créativité, tutorat..."
+              placeholder="Défis complémentaires, autonomie accrue, créativité..."
               className="w-full text-xs bg-white rounded-lg border border-emerald-200 p-2 focus:ring-2 focus:ring-emerald-500 outline-none resize-none"
             />
           </div>
@@ -244,7 +348,7 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
               onChange={e => onChange({
                 differentiation: { ...lesson.differentiation, amenagements: e.target.value }
               })}
-              placeholder="Ex: Typographie adaptée (OpenDyslexic), binômes solidaires, temps majoré..."
+              placeholder="Aménagements raisonnables (typographie, temps majoré, matériel adapté)..."
               className="w-full text-xs bg-white rounded-lg border border-blue-200 p-2 focus:ring-2 focus:ring-blue-500 outline-none resize-none"
             />
           </div>

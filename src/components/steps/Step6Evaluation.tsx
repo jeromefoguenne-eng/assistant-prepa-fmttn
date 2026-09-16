@@ -257,7 +257,7 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
               rows={2}
               value={evalConfig.taskDescription}
               onChange={e => updateEvaluation({ taskDescription: e.target.value })}
-              placeholder="Ex: L'élève teste son programme Scratch devant son binôme à l'aide de 3 cas de tri sélectif et vérifie la conformité de l'algorithme sur sa grille critériée..."
+              placeholder="Description concrète de la tâche ou de la situation d'évaluation demandée à l'élève..."
               className="w-full text-sm rounded-xl border border-slate-300 p-3 focus:ring-2 focus:ring-rose-500 outline-none"
             />
           </div>
@@ -361,7 +361,7 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
                       type="text"
                       value={crit.criterion}
                       onChange={e => updateCriterion(crit.id, { criterion: e.target.value })}
-                      placeholder="Ex: Exactitude de l'algorithme conditionnel"
+                      placeholder="Intitulé du critère d'évaluation..."
                       className="w-full text-xs rounded-lg border border-slate-300 px-3 py-1.5 outline-none focus:ring-2 focus:ring-rose-500 bg-white"
                     />
                   </div>
@@ -374,7 +374,7 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
                       type="text"
                       value={crit.observableIndicator}
                       onChange={e => updateCriterion(crit.id, { observableIndicator: e.target.value })}
-                      placeholder="Ex: Le lutin trie les 3 types d'objets sans aucune erreur"
+                      placeholder="Indicateur observable de réussite..."
                       className="w-full text-xs rounded-lg border border-slate-300 px-3 py-1.5 outline-none focus:ring-2 focus:ring-rose-500 bg-white"
                     />
                   </div>
@@ -459,7 +459,7 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
           rows={2}
           value={evalConfig.feedbackStrategy}
           onChange={e => updateEvaluation({ feedbackStrategy: e.target.value })}
-          placeholder="Ex: Débriefing immédiat entre pairs avec la grille critériée + rétroaction formative de l'enseignant pour identifier les ajustements nécessaires avant la clôture de la leçon."
+          placeholder="Modalités de retour et de feedback formatif apporté à l'élève..."
           className="w-full text-sm rounded-xl border border-slate-300 p-3 focus:ring-2 focus:ring-rose-500 outline-none"
         />
       </div>

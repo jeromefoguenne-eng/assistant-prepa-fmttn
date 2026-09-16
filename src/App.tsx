@@ -12,7 +12,7 @@ import { Step8Export } from './components/steps/Step8Export';
 import { LessonPlan } from './types/lesson';
 import { EMPTY_LESSON_PLAN } from './data/initial_templates';
 
-const STORAGE_KEY = 'fmttn_lesson_designer_current_plan';
+const STORAGE_KEY = 'fmttn_lesson_designer_plan_v5';
 
 export const App: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -20,14 +20,22 @@ export const App: React.FC = () => {
 
   const [lesson, setLesson] = useState<LessonPlan>(() => {
     try {
+      // Nettoyage proactif des anciennes clés pour éviter la résurgence d'anciens exemples en cache
+      ['fmttn_lesson_designer_current_plan', 'fmttn_lesson_designer_current_plan_v2', 'fmttn_lesson_designer_current_plan_v3', 'fmttn_lesson_designer_current_plan_v4'].forEach(k => {
+        try { localStorage.removeItem(k); } catch (_) {}
+      });
+
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed && !parsed.id?.startsWith('sample_')) {
+          return parsed;
+        }
       }
     } catch (e) {
       console.error("Failed to load plan from localStorage", e);
     }
-    // Démarrage par défaut sur un canevas vierge (bulles vides)
+    // Démarrage par défaut sur un canevas strictement vierge (bulles vides, 3 phases initiales non remplies)
     return { ...EMPTY_LESSON_PLAN, id: 'plan_' + Date.now() };
   });
 

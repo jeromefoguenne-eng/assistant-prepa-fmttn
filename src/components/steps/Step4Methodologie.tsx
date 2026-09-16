@@ -307,7 +307,7 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
             rows={3}
             value={currentMethodology.rationale}
             onChange={e => handleRationaleChange(e.target.value)}
-            placeholder="Ex: La démarche d'investigation en binôme oblige les élèves à verbaliser leurs hypothèses et à tester méthodiquement la réaction du capteur avant de généraliser la règle de codage."
+            placeholder="Justifiez le choix de cette démarche active au regard des attendus visés..."
             className="w-full text-sm rounded-xl border border-slate-300 p-3 focus:ring-2 focus:ring-amber-500 outline-none"
           />
         </div>
@@ -349,7 +349,7 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
                   type="text"
                   value={customTitle}
                   onChange={e => setCustomTitle(e.target.value)}
-                  placeholder="Ex: Ateliers tournants de fabrication & test mutuel"
+                  placeholder="Intitulé de votre méthodologie personnalisée..."
                   className="w-full text-sm rounded-lg border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -362,7 +362,7 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
                   rows={3}
                   value={customDescription}
                   onChange={e => setCustomDescription(e.target.value)}
-                  placeholder="Ex: La classe est divisée en 3 ateliers successifs (Conception, Réalisation, Contrôle qualité). Les élèves alternent par rotations de 25 minutes avec un carnet de bord individuel..."
+                  placeholder="Description des différentes phases et dynamiques de travail..."
                   className="w-full rounded-lg border border-slate-300 p-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -376,7 +376,7 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
                     type="text"
                     value={customStudentRole}
                     onChange={e => setCustomStudentRole(e.target.value)}
-                    placeholder="Ex: Expérimentateur, artisan, rapporteur d'équipe"
+                    placeholder="Rôle et actions attendues de l'élève..."
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
@@ -389,7 +389,7 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
                     type="text"
                     value={customTeacherRole}
                     onChange={e => setCustomTeacherRole(e.target.value)}
-                    placeholder="Ex: Régulateur des temps, garant de la sécurité, étayage ciblé"
+                    placeholder="Posture et interventions de l'enseignant..."
                     className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
@@ -403,7 +403,7 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
                   rows={2}
                   value={customRationale}
                   onChange={e => setCustomRationale(e.target.value)}
-                  placeholder="Ex: Elle permet de maximiser le temps de manipulation sur les machines en effectif réduit tout en favorisant l'autonomie et l'auto-régulation..."
+                  placeholder="Plus-value didactique de cette démarche..."
                   className="w-full rounded-lg border border-slate-300 p-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
