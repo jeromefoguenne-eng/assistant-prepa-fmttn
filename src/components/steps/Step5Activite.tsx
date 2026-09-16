@@ -3,7 +3,11 @@ import {
   Layers, 
   Clock, 
   Sparkles, 
-  Sliders
+  Sliders,
+  BookmarkCheck,
+  Zap,
+  HelpCircle,
+  Accessibility
 } from 'lucide-react';
 import { LessonPlan, ActivityPhase } from '../../types/lesson';
 
@@ -21,31 +25,57 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
     onChange({ phases: newPhases });
   };
 
+  const totalDuration = lesson.phases.reduce((acc, p) => acc + (p.durationMinutes || 0), 0);
+
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-cyan-900 to-blue-900 text-white rounded-2xl p-6 sm:p-8 shadow-md">
+      <div className="bg-gradient-to-r from-cyan-900 to-blue-900 text-white rounded-2xl p-6 sm:p-8 shadow-md space-y-4">
         <div className="flex items-start space-x-4">
           <div className="p-3 bg-white/10 rounded-xl">
             <Layers className="w-8 h-8 text-cyan-300" />
           </div>
-          <div>
+          <div className="flex-1">
             <span className="text-xs uppercase font-bold tracking-wider text-cyan-300 bg-cyan-500/30 px-2.5 py-0.5 rounded-full">
-              Étape 5 sur 8 • Scénarisation Didactique
+              Étape 4 sur 7 - Scénarisation Didactique
             </span>
             <h2 className="text-2xl font-bold mt-1 text-white">Scénariser l'Activité</h2>
-            <p className="text-cyan-100 text-sm mt-2 max-w-3xl leading-relaxed">
-              Découpez votre leçon selon les 3 temps forts de la didactique active : 
-              <strong> 1. Amorce / Découverte → 2. Recherche / Expérimentation active → 3. Institutionnalisation / Synthèse</strong>.
+            <p className="text-cyan-100 text-sm mt-1 max-w-3xl leading-relaxed">
+              Découpez votre leçon selon les 3 temps forts canoniques de la didactique active FMTTN :
             </p>
+          </div>
+        </div>
+
+        {/* Adéquation parfaite des titres des phases dans le bandeau bleu */}
+        <div className="bg-black/20 rounded-xl p-3 border border-white/10 flex flex-wrap items-center gap-2">
+          {lesson.phases.map((phase, idx) => (
+            <React.Fragment key={phase.id}>
+              <div className="flex items-center space-x-2 bg-white/15 px-3 py-1.5 rounded-lg text-xs font-semibold text-cyan-100">
+                <span className="w-5 h-5 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center font-bold text-[11px] flex-shrink-0">
+                  {idx + 1}
+                </span>
+                <span className="text-white font-medium">
+                  {phase.title || `Phase ${idx + 1}`}
+                </span>
+                <span className="text-cyan-300 font-normal text-[11px]">
+                  ({phase.durationMinutes} min)
+                </span>
+              </div>
+              {idx < lesson.phases.length - 1 && (
+                <span className="text-cyan-300 font-bold text-xs">→</span>
+              )}
+            </React.Fragment>
+          ))}
+          <div className="ml-auto text-[11px] text-cyan-200 font-medium">
+            Durée totale : <strong className="text-white">{totalDuration} min</strong>
           </div>
         </div>
       </div>
 
-      {/* 5.1 Déroulement chronologique des 3 phases canoniques */}
+      {/* 4.1 Déroulement chronologique des 3 phases */}
       <div className="space-y-6">
         <h3 className="text-base font-semibold text-slate-900">
-          5.1 Déroulement chronologique des 3 phases canoniques
+          4.1 Déroulement chronologique des phases d'apprentissage
         </h3>
 
         {lesson.phases.map((phase, idx) => (
@@ -136,56 +166,86 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
         ))}
       </div>
 
-      {/* 5.2 Différenciation Pédagogique & Aménagements raisonnables (Renumérotée) */}
+      {/* 4.2 Différenciation Pédagogique : Remédiation, Consolidation, Dépassement & Aménagements */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
         <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
           <Sliders className="w-5 h-5 text-emerald-600" />
-          <span>5.2 Différenciation pédagogique & Aménagements raisonnables</span>
+          <span>4.2 Différenciation pédagogique : Remédiation, Consolidation, Dépassement & Aménagements</span>
         </h3>
+        <p className="text-xs text-slate-500">
+          Prévoyez les réponses didactiques adaptées à la diversité des rythmes et besoins de vos élèves.
+        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Remédiation (élèves en difficulté)
-            </label>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+          {/* 1. Remédiation */}
+          <div className="p-3.5 bg-rose-50/50 rounded-xl border border-rose-200/80 space-y-1.5">
+            <div className="flex items-center space-x-1.5 text-rose-900 font-bold text-xs">
+              <HelpCircle className="w-4 h-4 text-rose-600" />
+              <span>1. Remédiation</span>
+            </div>
+            <p className="text-[11px] text-slate-500">Élèves en difficulté / reprise guidée</p>
             <textarea
-              rows={2}
+              rows={3}
               value={lesson.differentiation?.remediation || ''}
               onChange={e => onChange({
                 differentiation: { ...lesson.differentiation, remediation: e.target.value }
               })}
-              placeholder="Ex: Cartes-indices avec étapes simplifiées..."
-              className="w-full text-xs rounded-lg border border-slate-300 p-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+              placeholder="Ex: Cartes-indices avec étapes simplifiées, étayage pas-à-pas..."
+              className="w-full text-xs bg-white rounded-lg border border-rose-200 p-2 focus:ring-2 focus:ring-rose-500 outline-none resize-none"
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Dépassement (élèves rapides / experts)
-            </label>
+          {/* 2. Consolidation */}
+          <div className="p-3.5 bg-amber-50/50 rounded-xl border border-amber-200/80 space-y-1.5">
+            <div className="flex items-center space-x-1.5 text-amber-900 font-bold text-xs">
+              <BookmarkCheck className="w-4 h-4 text-amber-600" />
+              <span>2. Consolidation</span>
+            </div>
+            <p className="text-[11px] text-slate-500">Stabilisation des acquis / entraînement</p>
             <textarea
-              rows={2}
+              rows={3}
+              value={lesson.differentiation?.consolidation || ''}
+              onChange={e => onChange({
+                differentiation: { ...lesson.differentiation, consolidation: e.target.value }
+              })}
+              placeholder="Ex: Exercice d'entraînement autonome sur une situation similaire pour ancrer le geste ou l'algorithme..."
+              className="w-full text-xs bg-white rounded-lg border border-amber-200 p-2 focus:ring-2 focus:ring-amber-500 outline-none resize-none"
+            />
+          </div>
+
+          {/* 3. Dépassement */}
+          <div className="p-3.5 bg-emerald-50/50 rounded-xl border border-emerald-200/80 space-y-1.5">
+            <div className="flex items-center space-x-1.5 text-emerald-900 font-bold text-xs">
+              <Zap className="w-4 h-4 text-emerald-600" />
+              <span>3. Dépassement</span>
+            </div>
+            <p className="text-[11px] text-slate-500">Élèves rapides / défis experts</p>
+            <textarea
+              rows={3}
               value={lesson.differentiation?.depassement || ''}
               onChange={e => onChange({
                 differentiation: { ...lesson.differentiation, depassement: e.target.value }
               })}
-              placeholder="Ex: Défi additionnel avec contraintes supplémentaires..."
-              className="w-full text-xs rounded-lg border border-slate-300 p-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+              placeholder="Ex: Défi additionnel avec contraintes supplémentaires, créativité, tutorat..."
+              className="w-full text-xs bg-white rounded-lg border border-emerald-200 p-2 focus:ring-2 focus:ring-emerald-500 outline-none resize-none"
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Aménagements spécifiques (DYS / Besoins particuliers)
-            </label>
+          {/* 4. Aménagements */}
+          <div className="p-3.5 bg-blue-50/50 rounded-xl border border-blue-200/80 space-y-1.5">
+            <div className="flex items-center space-x-1.5 text-blue-900 font-bold text-xs">
+              <Accessibility className="w-4 h-4 text-blue-600" />
+              <span>4. Aménagements</span>
+            </div>
+            <p className="text-[11px] text-slate-500">Besoins spécifiques / DYS</p>
             <textarea
-              rows={2}
+              rows={3}
               value={lesson.differentiation?.amenagements || ''}
               onChange={e => onChange({
                 differentiation: { ...lesson.differentiation, amenagements: e.target.value }
               })}
-              placeholder="Ex: Typographie adaptée (OpenDyslexic), binômes solidaires..."
-              className="w-full text-xs rounded-lg border border-slate-300 p-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+              placeholder="Ex: Typographie adaptée (OpenDyslexic), binômes solidaires, temps majoré..."
+              className="w-full text-xs bg-white rounded-lg border border-blue-200 p-2 focus:ring-2 focus:ring-blue-500 outline-none resize-none"
             />
           </div>
         </div>
@@ -196,16 +256,16 @@ export const Step5Activite: React.FC<Step5Props> = ({ lesson, onChange, onNext, 
         <button
           type="button"
           onClick={onPrev}
-          className="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-medium text-sm transition"
+          className="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-medium text-sm transition cursor-pointer"
         >
-          ← Retour à l'Étape 4
+          ← Retour à l'Étape 3 : Méthodologie
         </button>
         <button
           type="button"
           onClick={onNext}
-          className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2"
+          className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2 cursor-pointer"
         >
-          <span>Passer à l'Étape 6 : Concevoir l'Évaluation</span>
+          <span>Passer à l'Étape 5 : Concevoir l'Évaluation</span>
           <span>→</span>
         </button>
       </div>

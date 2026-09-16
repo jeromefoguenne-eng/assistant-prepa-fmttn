@@ -70,7 +70,7 @@ export const Step3EducationMedias: React.FC<Step3Props> = ({ lesson, onChange, o
           </div>
           <div>
             <span className="text-xs uppercase font-bold tracking-wider text-purple-300 bg-purple-500/30 px-2.5 py-0.5 rounded-full">
-              Étape 3 sur 8 • Dimension Obligatoire
+              Étape 2 sur 7 • Dimension Obligatoire
             </span>
             <h2 className="text-2xl font-bold mt-1 text-white">Éducation aux Médias et au Numérique</h2>
             <p className="text-purple-100 text-sm mt-2 max-w-3xl leading-relaxed">
@@ -85,7 +85,7 @@ export const Step3EducationMedias: React.FC<Step3Props> = ({ lesson, onChange, o
       <div className="space-y-4">
         <div>
           <h3 className="text-base font-semibold text-slate-900">
-            3.1 Sélectionnez la ou les dimensions médiatiques engagées *
+            2.1 Sélectionnez la ou les dimensions médiatiques engagées *
           </h3>
           <p className="text-xs text-slate-500">
             Vous pouvez combiner plusieurs dimensions selon les moments de la leçon.
@@ -147,7 +147,7 @@ export const Step3EducationMedias: React.FC<Step3Props> = ({ lesson, onChange, o
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
         <div>
           <h3 className="text-base font-semibold text-slate-900">
-            3.2 Compétences médiatiques et numériques spécifiques (CSEM / DigComp)
+            2.2 Compétences médiatiques et numériques spécifiques (CSEM / DigComp)
           </h3>
           <p className="text-xs text-slate-500">
             Cochez les compétences concrètement exercées par les élèves durant l'activité.
@@ -187,7 +187,7 @@ export const Step3EducationMedias: React.FC<Step3Props> = ({ lesson, onChange, o
       {/* Justification didactique */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-3">
         <label className="block text-sm font-semibold text-slate-900">
-          3.3 Justification réflexive de la dimension médiatique *
+          2.3 Justification réflexive de la dimension médiatique *
         </label>
         <p className="text-xs text-slate-500">
           « Quelle compétence médiatique ou numérique est réellement travaillée et comment cette activité permet-elle de développer l'esprit critique ou la créativité de l'élève ? »
@@ -208,14 +208,14 @@ export const Step3EducationMedias: React.FC<Step3Props> = ({ lesson, onChange, o
           onClick={onPrev}
           className="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-medium text-sm transition"
         >
-          ← Retour à l'Étape 2
+          ← Retour à l'Étape 1 : Référentiel
         </button>
         <button
           type="button"
           onClick={onNext}
           className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2"
         >
-          <span>Passer à l'Étape 4 : Choisir la Méthodologie</span>
+          <span>Passer à l'Étape 3 : Choisir la Méthodologie</span>
           <span>→</span>
         </button>
       </div>

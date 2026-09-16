@@ -95,8 +95,8 @@ export interface LessonPlan {
   selectedItems: ReferentielItem[];
   referentielRationale: string;
   
-  // Etape 2 : Apprentissage
-  objectives: PedagogicalObjective[];
+  // Objectifs (optionnel / archivé)
+  objectives?: PedagogicalObjective[];
   
   // Etape 3 : Éducation aux Médias
   mediaEducation: MediaEducationConfig;
@@ -109,6 +109,7 @@ export interface LessonPlan {
   digitalTools: DigitalToolUsage[];
   differentiation: {
     remediation: string;
+    consolidation?: string;
     depassement: string;
     amenagements: string;
   };
@@ -127,7 +128,7 @@ export interface AlignmentDiagnostic {
   warnings: string[];
   recommendations: string[];
   metrics: {
-    bloomConsistency: number; // 0-100
+    referentielCoverage: number; // 0-100 (Ancrage référentiel FMTTN)
     mediaJustification: number; // 0-100
     digitalRelevance: number; // 0-100
     evaluativePrecision: number; // 0-100

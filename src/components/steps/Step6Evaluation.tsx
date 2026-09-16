@@ -33,18 +33,18 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
     });
   };
 
-  // Ajout d'un critère vierge ou pré-lié à un attendu
+  // Ajout d'un critère vierge ou pré-lié à un attendu (bulles vides par défaut)
   const addCriterionForAttendu = (item?: ReferentielItem) => {
     const newCrit: EvaluationCriterion = {
       id: 'crit_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
       attenduId: item?.id || '',
       attenduText: item?.attendu || '',
       criterion: item ? `Maîtrise : ${item.intitule}` : '',
-      observableIndicator: item ? `L'élève démontre qu'il sait : ${item.attendu.toLowerCase()}` : '',
-      nonAcquis: "L'attendu n'est pas rencontré : blocage ou incompréhension de la démarche.",
-      enVoie: "L'attendu est partiellement atteint : réalisation avec étayage ou aide de l'enseignant.",
-      acquis: "L'attendu est atteint avec succès et en autonomie conformément aux exigences.",
-      depasse: "L'attendu est dépassé : démarche optimale, esprit critique, transfert ou aide apportée aux pairs."
+      observableIndicator: '',
+      nonAcquis: '',
+      enVoie: '',
+      acquis: '',
+      depasse: ''
     };
     updateEvaluation({ criteria: [...(evalConfig.criteria || []), newCrit] });
   };
@@ -110,7 +110,7 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
           </div>
           <div>
             <span className="text-xs uppercase font-bold tracking-wider text-rose-300 bg-rose-500/30 px-2.5 py-0.5 rounded-full">
-              Étape 6 sur 8 • Triple Concordance & Métrologie
+              Étape 5 sur 7 • Triple Concordance & Métrologie
             </span>
             <h2 className="text-2xl font-bold mt-1 text-white">
               Évaluer l'Atteinte des Attendus du Référentiel
@@ -129,7 +129,7 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
           <div>
             <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
               <GraduationCap className="w-5 h-5 text-indigo-600" />
-              <span>6.1 Attendus sélectionnés à la Page 1 ({selectedItems.length})</span>
+              <span>5.1 Attendus sélectionnés à la Page 1 ({selectedItems.length})</span>
             </h3>
             <p className="text-xs text-slate-500">
               Ces attendus constituent les cibles officielles à évaluer dans votre leçon. Définissez vos critères directement à partir d'eux.
@@ -212,7 +212,7 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
       {/* SECTION 2 : DISPOSITIF ET MODALITÉ D'ÉVALUATION */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5">
         <h3 className="text-base font-semibold text-slate-900">
-          6.2 Modalité et tâche d'évaluation
+          5.2 Modalité et tâche d'évaluation
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -270,7 +270,7 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
           <div>
             <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
               <Award className="w-5 h-5 text-rose-600" />
-              <span>6.3 Grille critériée — Évaluation de l'atteinte des attendus ({evalConfig.criteria.length})</span>
+              <span>5.3 Grille critériée — Évaluation de l'atteinte des attendus ({evalConfig.criteria.length})</span>
             </h3>
             <p className="text-xs text-slate-500">
               Chaque critère permet d'évaluer concrètement le niveau d'atteinte de l'attendu à travers des indicateurs observables.
@@ -450,7 +450,7 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
       {/* SECTION 4 : RÉTROACTION / FEEDBACK FORMATIF */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-3">
         <label className="block text-sm font-semibold text-slate-900">
-          6.4 Stratégie de feedback à l'élève
+          5.4 Stratégie de feedback à l'élève
         </label>
         <p className="text-xs text-slate-500">
           Comment l'élève reçoit-il un retour sur l'atteinte des attendus ? Quel dispositif de régulation ou d'auto-positionnement est mis en œuvre ?
@@ -471,14 +471,14 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
           onClick={onPrev}
           className="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-medium text-sm transition"
         >
-          ← Retour à l'Étape 5
+          ← Retour à l'Étape 4 : Activité
         </button>
         <button
           type="button"
           onClick={onNext}
           className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2"
         >
-          <span>Passer à l'Étape 7 : Diagnostic & Vérification</span>
+          <span>Passer à l'Étape 6 : Diagnostic & Vérification</span>
           <span>→</span>
         </button>
       </div>

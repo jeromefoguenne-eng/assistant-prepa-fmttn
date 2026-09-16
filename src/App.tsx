@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { ProgressBar } from './components/ProgressBar';
 import { Step1Referentiel } from './components/steps/Step1Referentiel';
-import { Step2Apprentissages } from './components/steps/Step2Apprentissages';
 import { Step3EducationMedias } from './components/steps/Step3EducationMedias';
 import { Step4Methodologie } from './components/steps/Step4Methodologie';
 import { Step5Activite } from './components/steps/Step5Activite';
@@ -11,7 +10,7 @@ import { Step7Verification } from './components/steps/Step7Verification';
 import { Step8Export } from './components/steps/Step8Export';
 
 import { LessonPlan } from './types/lesson';
-import { EMPTY_LESSON_PLAN, SAMPLE_LESSON_PLANS } from './data/initial_templates';
+import { EMPTY_LESSON_PLAN } from './data/initial_templates';
 
 const STORAGE_KEY = 'fmttn_lesson_designer_current_plan';
 
@@ -28,8 +27,8 @@ export const App: React.FC = () => {
     } catch (e) {
       console.error("Failed to load plan from localStorage", e);
     }
-    // Default to the first sample template so the user immediately sees a rich example
-    return SAMPLE_LESSON_PLANS[0];
+    // Démarrage par défaut sur un canevas vierge (bulles vides)
+    return { ...EMPTY_LESSON_PLAN, id: 'plan_' + Date.now() };
   });
 
   // Auto-save to localStorage
@@ -65,7 +64,7 @@ export const App: React.FC = () => {
     if (!completedSteps.includes(currentStep)) {
       setCompletedSteps(prev => [...prev, currentStep]);
     }
-    setCurrentStep(prev => Math.min(8, prev + 1));
+    setCurrentStep(prev => Math.min(7, prev + 1));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -80,7 +79,7 @@ export const App: React.FC = () => {
         lesson={lesson}
         onLoadTemplate={handleLoadTemplate}
         onReset={handleReset}
-        onExportClick={() => setCurrentStep(8)}
+        onExportClick={() => setCurrentStep(7)}
       />
 
       <div className="no-print">
@@ -103,14 +102,6 @@ export const App: React.FC = () => {
           />
         )}
         {currentStep === 2 && (
-          <Step2Apprentissages
-            lesson={lesson}
-            onChange={handleLessonChange}
-            onNext={nextStep}
-            onPrev={prevStep}
-          />
-        )}
-        {currentStep === 3 && (
           <Step3EducationMedias
             lesson={lesson}
             onChange={handleLessonChange}
@@ -118,7 +109,7 @@ export const App: React.FC = () => {
             onPrev={prevStep}
           />
         )}
-        {currentStep === 4 && (
+        {currentStep === 3 && (
           <Step4Methodologie
             lesson={lesson}
             onChange={handleLessonChange}
@@ -126,7 +117,7 @@ export const App: React.FC = () => {
             onPrev={prevStep}
           />
         )}
-        {currentStep === 5 && (
+        {currentStep === 4 && (
           <Step5Activite
             lesson={lesson}
             onChange={handleLessonChange}
@@ -134,7 +125,7 @@ export const App: React.FC = () => {
             onPrev={prevStep}
           />
         )}
-        {currentStep === 6 && (
+        {currentStep === 5 && (
           <Step6Evaluation
             lesson={lesson}
             onChange={handleLessonChange}
@@ -142,7 +133,7 @@ export const App: React.FC = () => {
             onPrev={prevStep}
           />
         )}
-        {currentStep === 7 && (
+        {currentStep === 6 && (
           <Step7Verification
             lesson={lesson}
             onNext={nextStep}
@@ -150,7 +141,7 @@ export const App: React.FC = () => {
             onGoToStep={step => setCurrentStep(step)}
           />
         )}
-        {currentStep === 8 && (
+        {currentStep === 7 && (
           <Step8Export
             lesson={lesson}
             onImportLesson={imported => setLesson(imported)}

@@ -96,6 +96,7 @@ export const SAMPLE_LESSON_PLANS: LessonPlan[] = [
     ],
     differentiation: {
       remediation: "Cartes-indices pré-remplies fournissant les 3 blocs indispensables à assembler pour les élèves en difficulté.",
+      consolidation: "Exercice d'application guidée : reproduire l'algorithme conditionnel sur un deuxième sprite (bac à compost) pour automatiser la structure logique.",
       depassement: "Ajouter un compte à rebours (chronomètre de 30 secondes) et un obstacle mobile (vent qui dévie la trajectoire du déchet).",
       amenagements: "Police de caractères adaptée pour élèves dyslexiques sur la fiche défi, binômes hétérogènes solidaires."
     },
@@ -227,6 +228,7 @@ export const SAMPLE_LESSON_PLANS: LessonPlan[] = [
     ],
     differentiation: {
       remediation: "Indiquer sur 2 images les zones précises à observer avec une pastille de couleur.",
+      consolidation: "Fiche d'application méthodique : analyser 2 nouvelles photos en binôme en cochant les critères objectifs de la grille pour stabiliser le réflexe critique.",
       depassement: "Découvrir la recherche inversée d'images via Google Images ou TinEye pour retrouver la première apparition sur le web.",
       amenagements: "Distribution de loupes optiques pour les supports imprimés pour soutenir la concentration visuelle."
     },
@@ -289,7 +291,7 @@ export const EMPTY_LESSON_PLAN: LessonPlan = {
   phases: [
     {
       id: 'phase_1',
-      title: 'Phase 1 : Amorce / Situation déclenchante',
+      title: 'Phase 1 : Amorce / Situation déclenchante (Découverte)',
       durationMinutes: 10,
       studentRole: '',
       teacherRole: '',
@@ -298,7 +300,7 @@ export const EMPTY_LESSON_PLAN: LessonPlan = {
     },
     {
       id: 'phase_2',
-      title: 'Phase 2 : Recherche / Expérimentation active',
+      title: 'Phase 2 : Recherche / Expérimentation active (Action)',
       durationMinutes: 30,
       studentRole: '',
       teacherRole: '',
@@ -307,7 +309,7 @@ export const EMPTY_LESSON_PLAN: LessonPlan = {
     },
     {
       id: 'phase_3',
-      title: 'Phase 3 : Institutionnalisation / Trace écrite',
+      title: 'Phase 3 : Institutionnalisation / Synthèse (Structuration)',
       durationMinutes: 10,
       studentRole: '',
       teacherRole: '',
@@ -318,6 +320,7 @@ export const EMPTY_LESSON_PLAN: LessonPlan = {
   digitalTools: [],
   differentiation: {
     remediation: '',
+    consolidation: '',
     depassement: '',
     amenagements: ''
   },

@@ -117,7 +117,7 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
           </div>
           <div>
             <span className="text-xs uppercase font-bold tracking-wider text-amber-300 bg-amber-500/30 px-2.5 py-0.5 rounded-full">
-              Étape 4 sur 8 • Didactique Active
+              Étape 3 sur 7 • Didactique Active
             </span>
             <h2 className="text-2xl font-bold mt-1 text-white">Choisir la Méthodologie Pédagogique</h2>
             <p className="text-amber-100 text-sm mt-2 max-w-3xl leading-relaxed">
@@ -436,14 +436,14 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
           onClick={onPrev}
           className="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-medium text-sm transition"
         >
-          ← Retour à l'Étape 3
+          ← Retour à l'Étape 2 : Éducation aux Médias
         </button>
         <button
           type="button"
           onClick={onNext}
           className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2"
         >
-          <span>Passer à l'Étape 5 : Scénariser l'Activité</span>
+          <span>Passer à l'Étape 4 : Scénariser l'Activité</span>
           <span>→</span>
         </button>
       </div>

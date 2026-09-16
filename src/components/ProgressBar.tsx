@@ -1,7 +1,6 @@
 import React from 'react';
 import { 
   BookOpen, 
-  Target, 
   Radio, 
   Workflow, 
   Layers, 
@@ -20,13 +19,12 @@ export interface StepDef {
 
 export const STEPS: StepDef[] = [
   { number: 1, label: 'Référentiel', shortLabel: '1. Référentiel', icon: BookOpen },
-  { number: 2, label: 'Apprentissages', shortLabel: '2. Apprentissages', icon: Target },
-  { number: 3, label: 'Éduc. Médias', shortLabel: '3. Médias', icon: Radio },
-  { number: 4, label: 'Méthodologie', shortLabel: '4. Méthode', icon: Workflow },
-  { number: 5, label: 'Activité', shortLabel: '5. Activité', icon: Layers },
-  { number: 6, label: 'Évaluation', shortLabel: '6. Évaluation', icon: CheckSquare },
-  { number: 7, label: 'Diagnostic', shortLabel: '7. Diagnostic', icon: ShieldCheck },
-  { number: 8, label: 'Export', shortLabel: '8. Export', icon: FileCheck2 },
+  { number: 2, label: 'Éduc. Médias', shortLabel: '2. Médias', icon: Radio },
+  { number: 3, label: 'Méthodologie', shortLabel: '3. Méthode', icon: Workflow },
+  { number: 4, label: 'Activité', shortLabel: '4. Activité', icon: Layers },
+  { number: 5, label: 'Évaluation', shortLabel: '5. Évaluation', icon: CheckSquare },
+  { number: 6, label: 'Diagnostic', shortLabel: '6. Diagnostic', icon: ShieldCheck },
+  { number: 7, label: 'Fiche & Export', shortLabel: '7. Fiche', icon: FileCheck2 },
 ];
 
 interface ProgressBarProps {
@@ -40,7 +38,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, onSelectS
     <div className="bg-white border-b border-slate-200 shadow-sm py-3 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <nav aria-label="Progress">
-          <ol className="grid grid-cols-4 md:grid-cols-8 gap-2">
+          <ol className="grid grid-cols-4 md:grid-cols-7 gap-2">
             {STEPS.map((step) => {
               const Icon = step.icon;
               const isCurrent = step.number === currentStep;

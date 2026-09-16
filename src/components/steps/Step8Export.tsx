@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import hechLogo from '../../assets/hech.jpg';
 import { LessonPlan } from '../../types/lesson';
-import { BLOOM_TAXONOMY } from '../../data/bloom_taxonomy';
+// BLOOM_TAXONOMY removed
 import { ACTIVE_METHODOLOGIES } from '../../data/methodologies';
 
 interface Step8Props {
@@ -58,29 +58,33 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
     });
     md += `\n**Justification de l'ancrage :** ${lesson.referentielRationale}\n\n`;
 
-    md += `## 2. OBJECTIFS OPÉRATIONNELS D'APPRENTISSAGE\n`;
-    (lesson.objectives || []).forEach(obj => {
-      md += `- ${obj.fullSentence} *(Niveau Bloom : ${BLOOM_TAXONOMY[obj.bloomLevel]?.name})*\n`;
-    });
-    md += `\n## 3. ÉDUCATION AUX MÉDIAS\n`;
+    md += `## 2. ÉDUCATION AUX MÉDIAS ET AU NUMÉRIQUE\n`;
     md += `- Dimensions : ${lesson.mediaEducation?.dimensions?.join(', ') || 'Non précisées'}\n`;
     md += `- Compétences CSEM : ${lesson.mediaEducation?.competences?.join(' ; ') || 'Non précisées'}\n`;
     md += `- Justification : ${lesson.mediaEducation?.justification || 'Non précisée'}\n\n`;
 
-    md += `## 4. MÉTHODOLOGIE ACTIVE\n`;
+    md += `## 3. DÉMARCHE PÉDAGOGIQUE ACTIVE\n`;
     md += `- Démarche : ${methodologyName}\n`;
     md += `- Organisation sociale : ${lesson.methodology?.groupingStrategy}\n`;
     md += `- Rationale : ${lesson.methodology?.rationale}\n\n`;
 
-    md += `## 5. SCÉNARISATION DIDACTIQUE (PHASES)\n`;
+    md += `## 4. SCÉNARISATION DIDACTIQUE (PHASES & DIFFÉRENCIATION)\n`;
     (lesson.phases || []).forEach((p) => {
       md += `### ${p.title} (${p.durationMinutes} min)\n`;
       md += `- **Élève :** ${p.studentRole}\n`;
       md += `- **Enseignant :** ${p.teacherRole}\n`;
       md += `- **Modalité :** ${p.socialModality} | **Matériel :** ${p.materials}\n\n`;
     });
+    if (lesson.differentiation) {
+      md += `### Différenciation pédagogique :\n`;
+      if (lesson.differentiation.remediation) md += `- **Remédiation :** ${lesson.differentiation.remediation}\n`;
+      if (lesson.differentiation.consolidation) md += `- **Consolidation :** ${lesson.differentiation.consolidation}\n`;
+      if (lesson.differentiation.depassement) md += `- **Dépassement :** ${lesson.differentiation.depassement}\n`;
+      if (lesson.differentiation.amenagements) md += `- **Aménagements raisonnables :** ${lesson.differentiation.amenagements}\n`;
+      md += `\n`;
+    }
 
-    md += `## 6. ÉVALUATION CRITÉRIÉE DE L'ATTEINTE DES ATTENDUS\n`;
+    md += `## 5. ÉVALUATION CRITÉRIÉE DE L'ATTEINTE DES ATTENDUS\n`;
     md += `- **Dispositif :** ${lesson.evaluation?.type} (${lesson.evaluation?.modality})\n`;
     md += `- **Tâche d'évaluation :** ${lesson.evaluation?.taskDescription}\n`;
     if (lesson.evaluation?.feedbackStrategy) {
@@ -112,7 +116,7 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
   };
 
   const handleCopySummary = () => {
-    navigator.clipboard.writeText(`Préparation FMTTN : ${lesson.title} (${lesson.grade}) - Objectif : ${lesson.objectives[0]?.fullSentence || ''}`);
+    navigator.clipboard.writeText(`Préparation FMTTN : ${lesson.title} (${lesson.grade})`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -272,25 +276,10 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
           </div>
         </div>
 
-        {/* 2. Apprentissage & Objectifs */}
-        <div className="print-section space-y-1.5">
-          <h2 className="print-section-title text-xs font-bold uppercase tracking-wider text-emerald-900 border-b border-emerald-200 pb-1">
-            2. Objectif(s) Opérationnel(s) d'Apprentissage
-          </h2>
-          <div className="space-y-1 text-xs">
-            {lesson.objectives.map((obj, i) => (
-              <div key={obj.id} className="print-item-box p-2 bg-emerald-50/50 rounded-lg border border-emerald-200">
-                <span className="font-bold text-emerald-800 mr-2">Objectif #{i+1} [{BLOOM_TAXONOMY[obj.bloomLevel]?.name}] :</span>
-                <span className="font-medium text-slate-900">{obj.fullSentence}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 3. Éducation aux Médias */}
+        {/* 2. Éducation aux Médias */}
         <div className="print-section space-y-1.5">
           <h2 className="print-section-title text-xs font-bold uppercase tracking-wider text-purple-900 border-b border-purple-200 pb-1">
-            3. Éducation aux Médias et au Numérique (CSEM & FWB)
+            2. Éducation aux Médias et au Numérique (CSEM & FWB)
           </h2>
           <div className="text-xs space-y-1 text-slate-800">
             <div>
@@ -315,7 +304,7 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
         {/* 4. Méthodologie */}
         <div className="print-section space-y-1.5">
           <h2 className="print-section-title text-xs font-bold uppercase tracking-wider text-amber-900 border-b border-amber-200 pb-1">
-            4. Démarche Pédagogique Active & Organisation
+            3. Démarche Pédagogique Active & Organisation
           </h2>
           <div className="text-xs space-y-0.5 text-slate-800">
             <p>
@@ -334,7 +323,7 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
         {/* 5. Déroulement Chronologique (Phases) */}
         <div className="print-section space-y-2">
           <h2 className="print-section-title text-xs font-bold uppercase tracking-wider text-cyan-900 border-b border-cyan-200 pb-1">
-            5. Scénario Didactique Détaillé
+            4. Scénario Didactique Détaillé
           </h2>
           <div className="print-table-container">
             <table className="print-table w-full text-left text-xs border border-slate-300 rounded-lg">
@@ -370,15 +359,23 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
           </div>
 
           {/* Différenciation */}
-          {(lesson.differentiation?.remediation || lesson.differentiation?.depassement) && (
-            <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+          {(lesson.differentiation?.remediation || lesson.differentiation?.consolidation || lesson.differentiation?.depassement || lesson.differentiation?.amenagements) && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-200">
               <div>
                 <strong className="text-slate-800 block text-[11px]">Remédiation :</strong>
-                <span className="text-slate-600">{lesson.differentiation.remediation}</span>
+                <span className="text-slate-600">{lesson.differentiation.remediation || 'Non précisé'}</span>
+              </div>
+              <div>
+                <strong className="text-slate-800 block text-[11px]">Consolidation :</strong>
+                <span className="text-slate-600">{lesson.differentiation.consolidation || 'Non précisé'}</span>
               </div>
               <div>
                 <strong className="text-slate-800 block text-[11px]">Dépassement :</strong>
-                <span className="text-slate-600">{lesson.differentiation.depassement}</span>
+                <span className="text-slate-600">{lesson.differentiation.depassement || 'Non précisé'}</span>
+              </div>
+              <div>
+                <strong className="text-slate-800 block text-[11px]">Aménagements :</strong>
+                <span className="text-slate-600">{lesson.differentiation.amenagements || 'Non précisé'}</span>
               </div>
             </div>
           )}
@@ -387,7 +384,7 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
         {/* 6. Évaluation : Atteinte des attendus */}
         <div className="print-section space-y-2">
           <h2 className="print-section-title text-xs font-bold uppercase tracking-wider text-rose-900 border-b border-rose-200 pb-1">
-            6. Dispositif d'Évaluation Critériée — Évaluation de l'Atteinte des Attendus
+            5. Dispositif d'Évaluation Critériée — Évaluation de l'Atteinte des Attendus
           </h2>
           <div className="text-xs space-y-0.5 text-slate-800">
             <p>
@@ -458,7 +455,7 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
           onClick={onPrev}
           className="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-medium text-sm transition cursor-pointer"
         >
-          ← Retour à l'Étape 7
+          ← Retour à l'Étape 6 (Diagnostic)
         </button>
         <button
           type="button"

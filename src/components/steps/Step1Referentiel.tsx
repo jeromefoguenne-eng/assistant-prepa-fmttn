@@ -93,7 +93,7 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
           </div>
           <div>
             <span className="text-xs uppercase font-bold tracking-wider text-blue-300 bg-blue-500/30 px-2.5 py-0.5 rounded-full">
-              Étape 1 sur 8
+              Étape 1 sur 7
             </span>
             <h2 className="text-2xl font-bold mt-1 text-white">
               Ancrage dans le Référentiel FMTTN
@@ -479,7 +479,7 @@ export const Step1Referentiel: React.FC<Step1Props> = ({ lesson, onChange, onNex
           onClick={onNext}
           className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2"
         >
-          <span>Passer à l'Étape 2 : Définir l'Apprentissage</span>
+          <span>Passer à l'Étape 2 : Éducation aux Médias</span>
           <span>→</span>
         </button>
       </div>

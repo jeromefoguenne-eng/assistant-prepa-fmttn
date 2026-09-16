@@ -70,12 +70,12 @@ export const Step7Verification: React.FC<Step7Props> = ({ lesson, onNext, onPrev
           </div>
           <div>
             <span className="text-xs uppercase font-bold tracking-wider text-indigo-300 bg-indigo-500/30 px-2.5 py-0.5 rounded-full">
-              Étape 7 sur 8 • Contrôle Qualité Pédagogique
+              Étape 6 sur 7 • Contrôle Qualité Pédagogique
             </span>
             <h2 className="text-2xl font-bold mt-1 text-white">Diagnostic d'Alignement Didactique</h2>
             <p className="text-slate-300 text-sm mt-2 max-w-3xl leading-relaxed">
-              Le moteur d'audit vérifie la <strong>Triple Concordance de Biggs</strong> (Cohérence Objectifs ↔ Activités ↔ Évaluation), 
-              le respect de la <strong>Taxonomie de Bloom</strong>, la <strong>justification médiatique</strong> et l'<strong>absence de techno-centrisme</strong>.
+              Le moteur d'audit vérifie la <strong>Triple Concordance</strong> (Cohérence Référentiel FMTTN ↔ Activités didactiques ↔ Dispositif d'évaluation), 
+              la <strong>justification médiatique</strong> et l'<strong>absence de techno-centrisme</strong>.
             </p>
           </div>
         </div>
@@ -110,14 +110,14 @@ export const Step7Verification: React.FC<Step7Props> = ({ lesson, onNext, onPrev
         {/* 4 Jauges Didactiques */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 pt-6 border-t border-slate-100">
           <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-            <span className="text-[11px] font-bold text-slate-600 block truncate">1. Rigueur Bloom</span>
+            <span className="text-[11px] font-bold text-slate-600 block truncate">1. Ancrage Référentiel</span>
             <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
               <div
                 className="bg-blue-600 h-full rounded-full transition-all"
-                style={{ width: `${diagnostic.metrics.bloomConsistency}%` }}
+                style={{ width: `${diagnostic.metrics.referentielCoverage}%` }}
               />
             </div>
-            <span className="text-xs font-semibold text-slate-900">{diagnostic.metrics.bloomConsistency}%</span>
+            <span className="text-xs font-semibold text-slate-900">{diagnostic.metrics.referentielCoverage}%</span>
           </div>
 
           <div className="p-3 bg-slate-50 rounded-xl space-y-1">
@@ -203,14 +203,14 @@ export const Step7Verification: React.FC<Step7Props> = ({ lesson, onNext, onPrev
           onClick={onPrev}
           className="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-medium text-sm transition"
         >
-          ← Retour à l'Étape 6
+          ← Retour à l'Étape 5 (Évaluation)
         </button>
         <button
           type="button"
           onClick={onNext}
           className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2"
         >
-          <span>Passer à l'Étape 8 : Aperçu Officiel & Export</span>
+          <span>Passer à l'Étape 7 : Fiche & Export</span>
           <span>→</span>
         </button>
       </div>
