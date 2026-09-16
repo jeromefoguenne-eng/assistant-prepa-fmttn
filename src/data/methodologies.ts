@@ -78,6 +78,25 @@ export const ACTIVE_METHODOLOGIES: MethodologyDefinition[] = [
     iconName: "Repeat"
   },
   {
+    id: 'enseignement_distance',
+    name: "Enseignement à distance",
+    tagline: "Scénarisation synchrone/asynchrone, autonomie & interactions intentionnelles",
+    description: "Modalité didactique dans laquelle enseignant et apprenants ne sont pas nécessairement réunis au même endroit. Repose sur 5 principes fondamentaux du syllabus : 1) Scénariser le parcours plutôt que simplement transmettre, 2) Alterner les temps d'apprentissage (Je découvre → j'expérimente → j'échange → je produis → je reçois un feedback → je réinvestis), 3) Organiser intentionnellement les 3 types d'interactions (enseignant ↔ élève, élève ↔ élève, élève ↔ contenu), 4) Développer l'autonomie par des consignes et critères explicites, 5) Évaluer régulièrement pour rendre les progrès visibles. Se décline en synchrone (visio Teams/Zoom), asynchrone (Moodle/capsules), hybride/blended learning ou HyFlex.",
+    teacherRole: "Scénariste et tuteur à distance : explicite rigoureusement les consignes et critères de réussite, anime les interactions (visio, forum) et garantit un feedback régulier.",
+    studentRole: "Apprenant autonome et actif : gère son rythme de travail, s'approprie les ressources numériques, interagit avec ses pairs, produit et sollicite de l'étayage.",
+    suitableOutcomes: [
+      "Développer l'autonomie et l'auto-régulation des apprentissages numériques",
+      "Alterner découverte asynchrone autonome et temps synchrones d'échanges",
+      "Collaborer à distance sur des projets et productions partagées"
+    ],
+    recommendedPhases: [
+      "Phase asynchrone : Découverte autonome & appropriation des ressources",
+      "Phase synchrone : Activité active, manipulation ou résolution collaborative",
+      "Régulation : Mutualisation, feedback régulier et synthèse structurée"
+    ],
+    iconName: "Laptop"
+  },
+  {
     id: 'defi',
     name: "Pédagogie du défi (Challenge-Based Learning)",
     tagline: "Un défi stimulant avec des contraintes précises",

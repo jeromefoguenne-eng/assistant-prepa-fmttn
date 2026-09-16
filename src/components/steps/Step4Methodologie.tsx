@@ -10,6 +10,7 @@ import {
   Repeat, 
   Trophy, 
   Gamepad2,
+  Laptop,
   Sparkles,
   Edit3,
   X
@@ -32,7 +33,8 @@ const ICONS_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Users,
   Repeat,
   Trophy,
-  Gamepad2
+  Gamepad2,
+  Laptop
 };
 
 export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNext, onPrev }) => {
@@ -132,7 +134,7 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
       <div className="space-y-4">
         <div>
           <h3 className="text-base font-semibold text-slate-900">
-            4.1 Démarches pédagogiques actives en FMTTN
+            3.1 Démarches pédagogiques actives en FMTTN
           </h3>
           <p className="text-xs text-slate-500">
             Créez votre propre méthodologie ou choisissez parmi les démarches didactiques recommandées.
@@ -268,7 +270,7 @@ export const Step4Methodologie: React.FC<Step4Props> = ({ lesson, onChange, onNe
       {/* Organisation sociale et Justification */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5">
         <h3 className="text-base font-semibold text-slate-900">
-          4.2 Modalité sociale & Justification de la démarche
+          3.2 Modalité sociale & Justification de la démarche
         </h3>
 
         <div>
