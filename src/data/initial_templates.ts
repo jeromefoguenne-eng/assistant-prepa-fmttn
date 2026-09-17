@@ -1,4 +1,11 @@
-import { LessonPlan } from '../types/lesson';
+import { LessonPlan, EvaluationLevelNames } from '../types/lesson';
+
+export const DEFAULT_LEVEL_NAMES: EvaluationLevelNames = {
+  nonAcquis: '1. Non acquis',
+  enVoie: "2. En voie d'acquisition",
+  acquis: '3. Acquis (Seuil de maîtrise)',
+  depasse: '4. Dépassé (Expert / Transfert)'
+};
 
 export const SAMPLE_LESSON_PLANS: LessonPlan[] = [
   {
@@ -328,6 +335,7 @@ export const EMPTY_LESSON_PLAN: LessonPlan = {
     type: 'formative',
     taskDescription: '',
     modality: 'observation_directe',
+    levelNames: { ...DEFAULT_LEVEL_NAMES },
     criteria: [
       {
         id: 'crit_1',

@@ -9,9 +9,52 @@ import {
   Link,
   GraduationCap,
   UserCheck,
-  ArrowLeft
+  ArrowLeft,
+  Sliders,
+  Edit2,
+  RotateCcw
 } from 'lucide-react';
-import { LessonPlan, EvaluationCriterion, ReferentielItem } from '../../types/lesson';
+import { LessonPlan, EvaluationCriterion, ReferentielItem, EvaluationLevelNames } from '../../types/lesson';
+import { DEFAULT_LEVEL_NAMES } from '../../data/initial_templates';
+
+export const PRESET_LEVEL_MODELS = [
+  {
+    name: "Échelle FWB (4 degrés)",
+    values: {
+      nonAcquis: "1. Non acquis",
+      enVoie: "2. En voie d'acquisition",
+      acquis: "3. Acquis (Seuil de maîtrise)",
+      depasse: "4. Dépassé (Expert / Transfert)"
+    }
+  },
+  {
+    name: "Niveaux de performance",
+    values: {
+      nonAcquis: "1. Insuffisant",
+      enVoie: "2. Fragile / En progrès",
+      acquis: "3. Satisfaisant (Attendu)",
+      depasse: "4. Très satisfaisant / Expert"
+    }
+  },
+  {
+    name: "Degrés d'autonomie",
+    values: {
+      nonAcquis: "1. Guidage requis",
+      enVoie: "2. Partiellement autonome",
+      acquis: "3. Pleinement autonome",
+      depasse: "4. Expert / Référent"
+    }
+  },
+  {
+    name: "Paliers 1 à 4",
+    values: {
+      nonAcquis: "Niveau 1",
+      enVoie: "Niveau 2",
+      acquis: "Niveau 3",
+      depasse: "Niveau 4"
+    }
+  }
+];
 
 interface Step6Props {
   lesson: LessonPlan;
@@ -23,6 +66,7 @@ interface Step6Props {
 export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext, onPrev }) => {
   const evalConfig = lesson.evaluation;
   const selectedItems = lesson.selectedItems || [];
+  const levelNames: EvaluationLevelNames = evalConfig.levelNames || DEFAULT_LEVEL_NAMES;
 
   const updateEvaluation = (fields: Partial<typeof evalConfig>) => {
     onChange({
@@ -30,6 +74,21 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
         ...evalConfig,
         ...fields
       }
+    });
+  };
+
+  const updateLevelName = (key: keyof EvaluationLevelNames, value: string) => {
+    updateEvaluation({
+      levelNames: {
+        ...levelNames,
+        [key]: value
+      }
+    });
+  };
+
+  const applyPresetLevels = (presetValues: EvaluationLevelNames) => {
+    updateEvaluation({
+      levelNames: presetValues
     });
   };
 
@@ -280,11 +339,92 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
           <button
             type="button"
             onClick={() => addCriterionForAttendu()}
-            className="flex items-center space-x-1 px-3 py-1.5 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 rounded-lg text-xs font-semibold transition self-start sm:self-auto"
+            className="flex items-center space-x-1 px-3.5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-xs transition self-start sm:self-auto cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Ajouter un critère libre</span>
           </button>
+        </div>
+
+        {/* Panneau de personnalisation des degrés d'atteinte / niveaux de maîtrise */}
+        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2.5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div className="flex items-center space-x-2 text-xs font-bold text-slate-800">
+              <Sliders className="w-4 h-4 text-indigo-600" />
+              <span>Niveaux de maîtrise (degrés d'atteinte) de votre grille :</span>
+            </div>
+
+            {/* Presets rapides */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[11px] text-slate-500 font-medium">Modèles rapides :</span>
+              {PRESET_LEVEL_MODELS.map(preset => (
+                <button
+                  key={preset.name}
+                  type="button"
+                  onClick={() => applyPresetLevels(preset.values)}
+                  className="px-2.5 py-1 text-[11px] font-semibold bg-white hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-200 shadow-2xs transition cursor-pointer"
+                  title={`Appliquer le modèle : ${preset.name}`}
+                >
+                  {preset.name}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => applyPresetLevels(DEFAULT_LEVEL_NAMES)}
+                className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-white rounded-lg border border-transparent hover:border-slate-200 transition cursor-pointer"
+                title="Rétablir les degrés officiels FWB par défaut"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          <p className="text-[11px] text-slate-500">
+            Modifiez librement les noms de vos 4 niveaux ci-dessous ou directement au sommet de chaque colonne dans les critères :
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
+            <div className="flex items-center space-x-1.5 bg-rose-50/70 border border-rose-200/80 px-2.5 py-1.5 rounded-lg">
+              <span className="text-[10px] font-bold text-rose-800 uppercase flex-shrink-0">1.</span>
+              <input
+                type="text"
+                value={levelNames.nonAcquis}
+                onChange={e => updateLevelName('nonAcquis', e.target.value)}
+                placeholder="Nom du degré 1..."
+                className="w-full text-xs font-bold text-rose-900 bg-white border border-rose-200 rounded px-2 py-0.5 outline-none focus:ring-1 focus:ring-rose-500"
+              />
+            </div>
+            <div className="flex items-center space-x-1.5 bg-amber-50/70 border border-amber-200/80 px-2.5 py-1.5 rounded-lg">
+              <span className="text-[10px] font-bold text-amber-800 uppercase flex-shrink-0">2.</span>
+              <input
+                type="text"
+                value={levelNames.enVoie}
+                onChange={e => updateLevelName('enVoie', e.target.value)}
+                placeholder="Nom du degré 2..."
+                className="w-full text-xs font-bold text-amber-900 bg-white border border-amber-200 rounded px-2 py-0.5 outline-none focus:ring-1 focus:ring-amber-500"
+              />
+            </div>
+            <div className="flex items-center space-x-1.5 bg-emerald-50/70 border border-emerald-200/80 px-2.5 py-1.5 rounded-lg">
+              <span className="text-[10px] font-bold text-emerald-800 uppercase flex-shrink-0">3.</span>
+              <input
+                type="text"
+                value={levelNames.acquis}
+                onChange={e => updateLevelName('acquis', e.target.value)}
+                placeholder="Nom du degré 3..."
+                className="w-full text-xs font-bold text-emerald-900 bg-white border border-emerald-200 rounded px-2 py-0.5 outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+            </div>
+            <div className="flex items-center space-x-1.5 bg-blue-50/70 border border-blue-200/80 px-2.5 py-1.5 rounded-lg">
+              <span className="text-[10px] font-bold text-blue-800 uppercase flex-shrink-0">4.</span>
+              <input
+                type="text"
+                value={levelNames.depasse}
+                onChange={e => updateLevelName('depasse', e.target.value)}
+                placeholder="Nom du degré 4..."
+                className="w-full text-xs font-bold text-blue-900 bg-white border border-blue-200 rounded px-2 py-0.5 outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+          </div>
         </div>
 
         {evalConfig.criteria.length === 0 ? (
@@ -382,16 +522,28 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
 
                 {/* Échelle d'évaluation de l'atteinte de l'attendu */}
                 <div className="space-y-1.5 pt-1">
-                  <div className="text-[11px] font-bold text-slate-700 flex items-center justify-between">
-                    <span>Degrés d'atteinte de l'attendu (Échelle analytique FWB) :</span>
+                  <div className="text-[11px] font-bold text-slate-700 flex flex-wrap items-center justify-between gap-1.5">
+                    <span className="flex items-center gap-1.5">
+                      <span>Degrés d'atteinte de l'attendu :</span>
+                      <span className="text-[10px] text-slate-500 font-normal italic">
+                        (Titres personnalisables : cliquez pour renommer)
+                      </span>
+                    </span>
                     <span className="text-[10px] text-slate-500 font-normal">Indiquez ce qui caractérise chaque palier</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
                     <div className="p-2.5 rounded-xl bg-rose-50/70 border border-rose-200/80">
-                      <span className="block text-[10px] uppercase font-bold text-rose-800 mb-1">
-                        1. Non acquis
-                      </span>
+                      <div className="flex items-center justify-between mb-1 gap-1">
+                        <input
+                          type="text"
+                          value={levelNames.nonAcquis}
+                          onChange={e => updateLevelName('nonAcquis', e.target.value)}
+                          title="Cliquez pour renommer ce degré de maîtrise"
+                          className="w-full text-[10px] uppercase font-bold text-rose-800 bg-transparent border-b border-dashed border-rose-300 hover:border-rose-500 focus:border-rose-600 focus:bg-white outline-none px-1 py-0.5 rounded transition"
+                        />
+                        <Edit2 className="w-3 h-3 text-rose-400 flex-shrink-0" />
+                      </div>
                       <textarea
                         rows={2}
                         value={crit.nonAcquis}
@@ -402,9 +554,16 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
                     </div>
 
                     <div className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80">
-                      <span className="block text-[10px] uppercase font-bold text-amber-800 mb-1">
-                        2. En voie d'acquisition
-                      </span>
+                      <div className="flex items-center justify-between mb-1 gap-1">
+                        <input
+                          type="text"
+                          value={levelNames.enVoie}
+                          onChange={e => updateLevelName('enVoie', e.target.value)}
+                          title="Cliquez pour renommer ce degré de maîtrise"
+                          className="w-full text-[10px] uppercase font-bold text-amber-800 bg-transparent border-b border-dashed border-amber-300 hover:border-amber-500 focus:border-amber-600 focus:bg-white outline-none px-1 py-0.5 rounded transition"
+                        />
+                        <Edit2 className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                      </div>
                       <textarea
                         rows={2}
                         value={crit.enVoie}
@@ -415,9 +574,16 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
                     </div>
 
                     <div className="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200/80">
-                      <span className="block text-[10px] uppercase font-bold text-emerald-800 mb-1">
-                        3. Acquis (Seuil de maîtrise)
-                      </span>
+                      <div className="flex items-center justify-between mb-1 gap-1">
+                        <input
+                          type="text"
+                          value={levelNames.acquis}
+                          onChange={e => updateLevelName('acquis', e.target.value)}
+                          title="Cliquez pour renommer ce degré de maîtrise"
+                          className="w-full text-[10px] uppercase font-bold text-emerald-800 bg-transparent border-b border-dashed border-emerald-300 hover:border-emerald-500 focus:border-emerald-600 focus:bg-white outline-none px-1 py-0.5 rounded transition"
+                        />
+                        <Edit2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                      </div>
                       <textarea
                         rows={2}
                         value={crit.acquis}
@@ -428,9 +594,16 @@ export const Step6Evaluation: React.FC<Step6Props> = ({ lesson, onChange, onNext
                     </div>
 
                     <div className="p-2.5 rounded-xl bg-blue-50/70 border border-blue-200/80">
-                      <span className="block text-[10px] uppercase font-bold text-blue-800 mb-1">
-                        4. Dépassé (Expert / Transfert)
-                      </span>
+                      <div className="flex items-center justify-between mb-1 gap-1">
+                        <input
+                          type="text"
+                          value={levelNames.depasse}
+                          onChange={e => updateLevelName('depasse', e.target.value)}
+                          title="Cliquez pour renommer ce degré de maîtrise"
+                          className="w-full text-[10px] uppercase font-bold text-blue-800 bg-transparent border-b border-dashed border-blue-300 hover:border-blue-500 focus:border-blue-600 focus:bg-white outline-none px-1 py-0.5 rounded transition"
+                        />
+                        <Edit2 className="w-3 h-3 text-blue-400 flex-shrink-0" />
+                      </div>
                       <textarea
                         rows={2}
                         value={crit.depasse || ''}

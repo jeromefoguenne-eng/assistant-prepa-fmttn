@@ -31,6 +31,13 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
     ? (lesson.methodology?.customMethodologyTitle || 'Méthodologie personnalisée')
     : (activeMethodology?.name || 'Démarche active');
 
+  const levelNames = lesson.evaluation?.levelNames || {
+    nonAcquis: '1. Non acquis',
+    enVoie: "2. En voie d'acquisition",
+    acquis: '3. Acquis (Seuil de maîtrise)',
+    depasse: '4. Dépassé (Expert / Transfert)'
+  };
+
   const handlePrint = () => {
     window.print();
   };
@@ -97,11 +104,11 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
         md += `- **Attendu évalué :** « ${c.attenduText} »\n`;
       }
       md += `- **Indicateur observable :** ${c.observableIndicator}\n`;
-      md += `- **Non acquis :** ${c.nonAcquis}\n`;
-      md += `- **En voie d'acquisition :** ${c.enVoie}\n`;
-      md += `- **Acquis (cible) :** ${c.acquis}\n`;
+      md += `- **${levelNames.nonAcquis} :** ${c.nonAcquis}\n`;
+      md += `- **${levelNames.enVoie} :** ${c.enVoie}\n`;
+      md += `- **${levelNames.acquis} :** ${c.acquis}\n`;
       if (c.depasse) {
-        md += `- **Dépassé :** ${c.depasse}\n`;
+        md += `- **${levelNames.depasse} :** ${c.depasse}\n`;
       }
       md += `\n`;
     });
@@ -406,10 +413,10 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
                 <tr>
                   <th className="p-2 border border-slate-300 w-[24%]">Critère & Attendu lié</th>
                   <th className="p-2 border border-slate-300 w-[28%]">Indicateur observable</th>
-                  <th className="p-2 border border-slate-300 w-[12%] bg-rose-50/50">Non acquis</th>
-                  <th className="p-2 border border-slate-300 w-[12%] bg-amber-50/50">En voie</th>
-                  <th className="p-2 border border-slate-300 w-[12%] bg-emerald-50/50">Acquis (cible)</th>
-                  <th className="p-2 border border-slate-300 w-[12%] bg-blue-50/50">Dépassé</th>
+                  <th className="p-2 border border-slate-300 w-[12%] bg-rose-50/50">{levelNames.nonAcquis}</th>
+                  <th className="p-2 border border-slate-300 w-[12%] bg-amber-50/50">{levelNames.enVoie}</th>
+                  <th className="p-2 border border-slate-300 w-[12%] bg-emerald-50/50">{levelNames.acquis}</th>
+                  <th className="p-2 border border-slate-300 w-[12%] bg-blue-50/50">{levelNames.depasse}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">

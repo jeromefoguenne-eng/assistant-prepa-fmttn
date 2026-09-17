@@ -75,10 +75,18 @@ export interface EvaluationCriterion {
   depasse?: string;
 }
 
+export interface EvaluationLevelNames {
+  nonAcquis: string;
+  enVoie: string;
+  acquis: string;
+  depasse: string;
+}
+
 export interface EvaluationConfig {
   type: 'diagnostique' | 'formative' | 'sommatrice' | 'combinée';
   taskDescription: string;
   modality: 'auto_evaluation' | 'evaluation_pairs' | 'observation_directe' | 'production_ecrite_numerique' | 'defense_orale';
+  levelNames?: EvaluationLevelNames;
   criteria: EvaluationCriterion[];
   feedbackStrategy: string;
 }
