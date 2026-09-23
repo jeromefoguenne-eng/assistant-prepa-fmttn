@@ -6,12 +6,14 @@ import {
   FileText, 
   Copy, 
   Check, 
-  Upload
+  Upload,
+  FileDown
 } from 'lucide-react';
 import hechLogo from '../../assets/hech.jpg';
 import { LessonPlan } from '../../types/lesson';
 // BLOOM_TAXONOMY removed
 import { ACTIVE_METHODOLOGIES } from '../../data/methodologies';
+import { exportLessonToDocx } from '../../utils/docx_exporter';
 
 interface Step8Props {
   lesson: LessonPlan;
@@ -21,6 +23,19 @@ interface Step8Props {
 
 export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPrev }) => {
   const [copied, setCopied] = React.useState(false);
+  const [isExportingDocx, setIsExportingDocx] = React.useState(false);
+
+  const handleExportDocx = async () => {
+    try {
+      setIsExportingDocx(true);
+      await exportLessonToDocx(lesson);
+    } catch (err) {
+      console.error("Erreur export Word:", err);
+      alert("Une erreur est survenue lors de la création du document Word.");
+    } finally {
+      setIsExportingDocx(false);
+    }
+  };
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const activeMethodology = ACTIVE_METHODOLOGIES.find(
@@ -160,6 +175,17 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
           >
             <Printer className="w-4 h-4" />
             <span>Imprimer / Sauvegarder en PDF</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleExportDocx}
+            disabled={isExportingDocx}
+            className="flex items-center space-x-1.5 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-xl text-xs font-semibold shadow transition cursor-pointer"
+            title="Télécharger la fiche complète au format Microsoft Word (.docx)"
+          >
+            <FileDown className="w-4 h-4" />
+            <span>{isExportingDocx ? 'Génération Word...' : 'Télécharger en Word (.docx)'}</span>
           </button>
 
           <button
@@ -464,14 +490,26 @@ export const Step8Export: React.FC<Step8Props> = ({ lesson, onImportLesson, onPr
         >
           ← Retour à l'Étape 6 (Diagnostic)
         </button>
-        <button
-          type="button"
-          onClick={handlePrint}
-          className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2 cursor-pointer"
-        >
-          <Printer className="w-4 h-4" />
-          <span>Imprimer la Fiche Officielle</span>
-        </button>
+        <div className="flex items-center space-x-3">
+          <button
+            type="button"
+            onClick={handleExportDocx}
+            disabled={isExportingDocx}
+            className="px-5 py-3 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2 cursor-pointer"
+            title="Télécharger la fiche complète au format Microsoft Word (.docx)"
+          >
+            <FileDown className="w-4 h-4" />
+            <span>{isExportingDocx ? 'Génération...' : 'Télécharger en Word (.docx)'}</span>
+          </button>
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-sm shadow-md transition flex items-center space-x-2 cursor-pointer"
+          >
+            <Printer className="w-4 h-4" />
+            <span>Imprimer la Fiche Officielle</span>
+          </button>
+        </div>
       </div>
     </div>
   );
