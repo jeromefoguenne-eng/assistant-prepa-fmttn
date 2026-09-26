@@ -135,10 +135,13 @@ export interface AlignmentDiagnostic {
   strengths: string[];
   warnings: string[];
   recommendations: string[];
+  isVirginPlan?: boolean;
+  severeFailures?: string[];
   metrics: {
     referentielCoverage: number; // 0-100 (Ancrage référentiel FMTTN)
-    mediaJustification: number; // 0-100
-    digitalRelevance: number; // 0-100
-    evaluativePrecision: number; // 0-100
+    scenarisationQuality: number; // 0-100 (Scénarisation didactique des activités)
+    evaluativePrecision: number; // 0-100 (Dispositif d'évaluation & concordance)
+    mediaJustification: number; // 0-100 (Éducation aux médias & numérique)
+    digitalRelevance?: number; // 0-100 (Optionnel / rétrocompatibilité)
   };
 }

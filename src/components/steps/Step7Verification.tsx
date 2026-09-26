@@ -9,7 +9,8 @@ import {
   TrendingUp,
   Activity,
   Layers,
-  Award
+  Award,
+  AlertOctagon
 } from 'lucide-react';
 import { LessonPlan } from '../../types/lesson';
 import { analyzeAlignment } from '../../utils/alignment_engine';
@@ -24,41 +25,74 @@ interface Step7Props {
 export const Step7Verification: React.FC<Step7Props> = ({ lesson, onNext, onPrev, onGoToStep }) => {
   const diagnostic = analyzeAlignment(lesson);
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
+  const getStatusBadge = () => {
+    if (diagnostic.isVirginPlan || diagnostic.score === 0) {
+      return {
+        label: 'Préparation Vierge (0 / 100)',
+        badgeClass: 'bg-slate-100 text-slate-700 border-slate-300 font-bold',
+        icon: XCircle,
+        iconClass: 'text-slate-500',
+        subtext: 'Aucun contenu didactique substantiel saisi. Renseignez la thématique, les attendus et la scénarisation.'
+      };
+    }
+
+    if (diagnostic.severeFailures && diagnostic.severeFailures.length > 0) {
+      return {
+        label: 'Échec Didactique Sévère — Fondamentaux Manquants',
+        badgeClass: 'bg-rose-100 text-rose-900 border-rose-400 font-extrabold shadow-sm',
+        icon: AlertOctagon,
+        iconClass: 'text-rose-600',
+        subtext: 'La préparation est sanctionnée : un ou plusieurs piliers indispensables (titre, attendus, scénarisation, évaluation) sont absents.'
+      };
+    }
+
+    switch (diagnostic.tripleConcordanceStatus) {
       case 'optimal':
         return {
           label: 'Alignement Didactique Optimal',
-          badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+          badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-300 font-bold',
           icon: CheckCircle2,
-          iconClass: 'text-emerald-600'
+          iconClass: 'text-emerald-600',
+          subtext: 'Excellente triple concordance entre attendus du référentiel, activités scénarisées et évaluation critériée.'
         };
       case 'acceptable':
         return {
           label: 'Alignement Globalement Cohérent',
-          badgeClass: 'bg-blue-100 text-blue-800 border-blue-300',
+          badgeClass: 'bg-blue-100 text-blue-800 border-blue-300 font-bold',
           icon: CheckCircle2,
-          iconClass: 'text-blue-600'
+          iconClass: 'text-blue-600',
+          subtext: 'Structure solide. Quelques ajustements mineurs recommandés pour optimiser la cohérence.'
         };
       case 'fragile':
         return {
           label: 'Alignement Fragile (Points à consolider)',
-          badgeClass: 'bg-amber-100 text-amber-800 border-amber-300',
+          badgeClass: 'bg-amber-100 text-amber-800 border-amber-300 font-bold',
           icon: AlertTriangle,
-          iconClass: 'text-amber-600'
+          iconClass: 'text-amber-600',
+          subtext: 'Plusieurs composantes manquent de précision (critères, posture enseignante ou justification médiatique).'
         };
       default:
         return {
           label: 'Désalignement Pédagogique Détecté',
-          badgeClass: 'bg-rose-100 text-rose-800 border-rose-300',
+          badgeClass: 'bg-rose-100 text-rose-800 border-rose-300 font-bold',
           icon: XCircle,
-          iconClass: 'text-rose-600'
+          iconClass: 'text-rose-600',
+          subtext: 'Éléments pédagogiques incohérents ou incomplets nécessitant une refonte ciblée.'
         };
     }
   };
 
-  const statusInfo = getStatusBadge(diagnostic.tripleConcordanceStatus);
+  const statusInfo = getStatusBadge();
   const StatusIcon = statusInfo.icon;
+
+  const getScoreColorClass = (score: number) => {
+    if (score === 0) return 'bg-slate-500 text-white';
+    if (score < 35) return 'bg-rose-600 text-white shadow-rose-200';
+    if (score < 50) return 'bg-rose-500 text-white shadow-rose-200';
+    if (score < 70) return 'bg-amber-500 text-white shadow-amber-200';
+    if (score < 85) return 'bg-blue-600 text-white shadow-blue-200';
+    return 'bg-emerald-600 text-white shadow-emerald-200';
+  };
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
@@ -74,8 +108,8 @@ export const Step7Verification: React.FC<Step7Props> = ({ lesson, onNext, onPrev
             </span>
             <h2 className="text-2xl font-bold mt-1 text-white">Diagnostic d'Alignement Didactique</h2>
             <p className="text-slate-300 text-sm mt-2 max-w-3xl leading-relaxed">
-              Le moteur d'audit vérifie la <strong>Triple Concordance</strong> (Cohérence Référentiel FMTTN ↔ Activités didactiques ↔ Dispositif d'évaluation), 
-              la <strong>justification médiatique</strong> et l'<strong>absence de techno-centrisme</strong>.
+              Le moteur d'audit évalue la <strong>Triple Concordance</strong> (Cohérence Référentiel FMTTN ↔ Activités didactiques ↔ Dispositif d'évaluation), 
+              la <strong>scénarisation des phases</strong>, la <strong>justification médiatique</strong> et l'<strong>absence de techno-centrisme</strong>.
             </p>
           </div>
         </div>
@@ -84,24 +118,24 @@ export const Step7Verification: React.FC<Step7Props> = ({ lesson, onNext, onPrev
       {/* Score Card */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
+          <div className="space-y-1">
             <div className="flex items-center space-x-2">
-              <StatusIcon className={`w-6 h-6 ${statusInfo.iconClass}`} />
-              <span className={`px-3 py-1 rounded-full text-xs font-bold border ${statusInfo.badgeClass}`}>
+              <StatusIcon className={`w-6 h-6 flex-shrink-0 ${statusInfo.iconClass}`} />
+              <span className={`px-3 py-1 rounded-full text-xs border ${statusInfo.badgeClass}`}>
                 {statusInfo.label}
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-2">
-              Indice de qualité didactique calculé sur l'ensemble de votre préparation.
+            <p className="text-xs text-slate-500 mt-1 max-w-xl">
+              {statusInfo.subtext}
             </p>
           </div>
 
-          <div className="flex items-center space-x-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <div className="flex items-center space-x-3 bg-slate-50 p-4 rounded-2xl border border-slate-200 flex-shrink-0">
             <div className="text-right">
               <span className="block text-2xl font-black text-slate-900">{diagnostic.score} / 100</span>
               <span className="text-[11px] font-semibold text-slate-500 uppercase">Score d'alignement</span>
             </div>
-            <div className="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-base shadow">
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black text-lg shadow-sm transition-all ${getScoreColorClass(diagnostic.score)}`}>
               {diagnostic.score}%
             </div>
           </div>
@@ -109,51 +143,98 @@ export const Step7Verification: React.FC<Step7Props> = ({ lesson, onNext, onPrev
 
         {/* 4 Jauges Didactiques */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 pt-6 border-t border-slate-100">
+          {/* Jauge 1 : Ancrage Référentiel */}
           <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-            <span className="text-[11px] font-bold text-slate-600 block truncate">1. Ancrage Référentiel</span>
+            <span className="text-[11px] font-bold text-slate-600 block truncate" title="Ancrage Référentiel FMTTN (Savoirs & Attendus)">
+              1. Ancrage Référentiel
+            </span>
             <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
               <div
                 className="bg-blue-600 h-full rounded-full transition-all"
                 style={{ width: `${diagnostic.metrics.referentielCoverage}%` }}
               />
             </div>
-            <span className="text-xs font-semibold text-slate-900">{diagnostic.metrics.referentielCoverage}%</span>
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-bold text-slate-900">{diagnostic.metrics.referentielCoverage}%</span>
+              <span className="text-[10px] text-slate-400">Poids 30%</span>
+            </div>
           </div>
 
+          {/* Jauge 2 : Scénarisation Didactique */}
           <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-            <span className="text-[11px] font-bold text-slate-600 block truncate">2. Éducation Médias</span>
+            <span className="text-[11px] font-bold text-slate-600 block truncate" title="Scénarisation Didactique (Phases, rôle élève/enseignant)">
+              2. Scénarisation Didactique
+            </span>
             <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
               <div
-                className="bg-purple-600 h-full rounded-full transition-all"
-                style={{ width: `${diagnostic.metrics.mediaJustification}%` }}
+                className="bg-indigo-600 h-full rounded-full transition-all"
+                style={{ width: `${diagnostic.metrics.scenarisationQuality}%` }}
               />
             </div>
-            <span className="text-xs font-semibold text-slate-900">{diagnostic.metrics.mediaJustification}%</span>
-          </div>
-
-          <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-            <span className="text-[11px] font-bold text-slate-600 block truncate">3. Pertinence Numérique</span>
-            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-              <div
-                className="bg-cyan-600 h-full rounded-full transition-all"
-                style={{ width: `${diagnostic.metrics.digitalRelevance}%` }}
-              />
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-bold text-slate-900">{diagnostic.metrics.scenarisationQuality}%</span>
+              <span className="text-[10px] text-slate-400">Poids 30%</span>
             </div>
-            <span className="text-xs font-semibold text-slate-900">{diagnostic.metrics.digitalRelevance}%</span>
           </div>
 
+          {/* Jauge 3 : Précision Évaluative */}
           <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-            <span className="text-[11px] font-bold text-slate-600 block truncate">4. Précision Évaluative</span>
+            <span className="text-[11px] font-bold text-slate-600 block truncate" title="Précision Évaluative & Concordance">
+              3. Précision Évaluative
+            </span>
             <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
               <div
                 className="bg-rose-600 h-full rounded-full transition-all"
                 style={{ width: `${diagnostic.metrics.evaluativePrecision}%` }}
               />
             </div>
-            <span className="text-xs font-semibold text-slate-900">{diagnostic.metrics.evaluativePrecision}%</span>
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-bold text-slate-900">{diagnostic.metrics.evaluativePrecision}%</span>
+              <span className="text-[10px] text-slate-400">Poids 25%</span>
+            </div>
+          </div>
+
+          {/* Jauge 4 : Éducation Médias */}
+          <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+            <span className="text-[11px] font-bold text-slate-600 block truncate" title="Éducation aux Médias & Numérique">
+              4. Éducation aux Médias
+            </span>
+            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+              <div
+                className="bg-purple-600 h-full rounded-full transition-all"
+                style={{ width: `${diagnostic.metrics.mediaJustification}%` }}
+              />
+            </div>
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-bold text-slate-900">{diagnostic.metrics.mediaJustification}%</span>
+              <span className="text-[10px] text-slate-400">Poids 15%</span>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Alerte Bloquante : Échecs fondamentaux */}
+      {diagnostic.severeFailures && diagnostic.severeFailures.length > 0 && (
+        <div className="bg-rose-50 border-2 border-rose-300 rounded-2xl p-6 shadow-sm space-y-3">
+          <div className="flex items-center space-x-3">
+            <AlertOctagon className="w-6 h-6 text-rose-600 flex-shrink-0" />
+            <h3 className="text-base font-bold text-rose-950">
+              Échec Pédagogique Sévère — Éléments fondamentaux manquants ({diagnostic.severeFailures.length})
+            </h3>
+          </div>
+          <p className="text-xs text-rose-900 leading-relaxed">
+            Une préparation didactique de qualité ne peut faire l'impasse sur ces piliers constitutifs. Le score global restera bloqué tant que ces éléments ne sont pas renseignés :
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1">
+            {diagnostic.severeFailures.map((failure, idx) => (
+              <div key={idx} className="bg-white/80 border border-rose-200 rounded-xl p-3 text-xs text-rose-900 font-semibold flex items-center space-x-2">
+                <span className="text-rose-600 font-black">✕</span>
+                <span>{failure}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Points forts */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-3">
@@ -161,14 +242,20 @@ export const Step7Verification: React.FC<Step7Props> = ({ lesson, onNext, onPrev
           <CheckCircle2 className="w-5 h-5 text-emerald-600" />
           <span>Points forts pédagogiques validés ({diagnostic.strengths.length})</span>
         </h3>
-        <div className="space-y-2">
-          {diagnostic.strengths.map((str, i) => (
-            <div key={i} className="p-3 bg-emerald-50/60 rounded-xl border border-emerald-200/60 text-xs text-emerald-950 flex items-start space-x-2">
-              <span className="text-emerald-600 font-bold">✓</span>
-              <span className="font-medium leading-relaxed">{str}</span>
-            </div>
-          ))}
-        </div>
+        {diagnostic.strengths.length === 0 ? (
+          <p className="text-xs text-slate-400 italic p-3 bg-slate-50 rounded-xl">
+            Aucun point fort validé pour l'instant. Complétez les étapes de la préparation pour valoriser votre démarche didactique.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {diagnostic.strengths.map((str, i) => (
+              <div key={i} className="p-3 bg-emerald-50/60 rounded-xl border border-emerald-200/60 text-xs text-emerald-950 flex items-start space-x-2">
+                <span className="text-emerald-600 font-bold">✓</span>
+                <span className="font-medium leading-relaxed">{str}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Alertes & Recommandations */}
@@ -183,7 +270,7 @@ export const Step7Verification: React.FC<Step7Props> = ({ lesson, onNext, onPrev
             {diagnostic.warnings.map((warn, i) => (
               <div key={i} className="p-3.5 bg-amber-50/70 rounded-xl border border-amber-200 text-xs text-amber-900 space-y-1">
                 <div className="flex items-center space-x-2 font-bold">
-                  <span>⚠️ {warn}</span>
+                  <span>{warn}</span>
                 </div>
                 {diagnostic.recommendations[i] && (
                   <div className="text-slate-700 pl-4 border-l-2 border-amber-400 mt-1">
